@@ -48,9 +48,17 @@ function checkForm(form){
 		}
 	}
 }
+
+function submitForm(){
+	$("#form1").submit();
+}
+
+function file(){
+	$("#form2").submit();
+}
 </script>
 <body>
-<form name="form1" method="post"  action="noticeServlet?action=add" style="margin-top:25px;" >
+<form name="form1" method="post"  id="form1" action="noticeServlet?action=add" style="margin-top:25px;" >
 <div class="dingwei">
 <table width="100%" height="25" border="0" cellspacing="0">
   <tr>
@@ -90,26 +98,23 @@ function checkForm(form){
           <td height="40" align="left" valign="middle" bgcolor="#FFFFFF">&nbsp;
 		  <input name="notice_content" type="text" value="" style=" width : 492px; height : 30px;"></td>
         </tr>
+       <form action="uploadServlet" id="form2" method="post" enctype="multipart/form-data">
+          <td height="50" align="center" valign="middle" bgcolor="#FFFFFF">附件：</td>
+          <td height="40" align="left" valign="middle" bgcolor="#FFFFFF">&nbsp;
+    		<input type="file" name="attachment1" />
+    		<input type="button" onclick="file()" value="上传"/>
+       </form>
+       </form>
          <tr>
-        
-    	
-        </tr>
-         <tr>
-          <td height="25" colspan="2" align="center" valign="middle" bgcolor="#FFFFFF"><label>
-            <input type="submit" name="Submit" value="提交" />
-          </label></td>
+          <td height="25" colspan="2" align="center" valign="middle" bgcolor="#FFFFFF">
+          <label>
+            <input type="button" onclick="submitForm()" value="提交" />
+          </label>
+          </td>
         </tr>
         <tr>
           <td height="30" colspan="2" align="right" valign="middle" bgcolor="#FFFFFF"><span onclick="history.go(-1)" style="cursor:hand;"><img src="image/return1.gif" width="70" height="20" /></span>&nbsp;&nbsp;&nbsp;&nbsp;</td>
         </tr>
-       </form> 
-       <form action="uploadServlet" method="post" enctype="multipart/form-data">
-          <td height="50" align="center" valign="middle" bgcolor="#FFFFFF">附件：</td>
-          <td height="40" align="left" valign="middle" bgcolor="#FFFFFF">&nbsp;
-        
-    		<input type="file" name="attachment1" />
-    		<input type="submit" value="上传"/>
-    	</form>
     </table>
 </div>
   <div style="width:700px; margin-left:25px;">

@@ -4,20 +4,24 @@ package com.lxitedu.st1610.servlet;
 
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.Iterator;
 import java.util.List;
-
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import org.apache.log4j.Logger;
 import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
@@ -60,36 +64,49 @@ public class UploadServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		
-		response.setCharacterEncoding("utf-8");
-		response.setContentType("text/html");
-		request.setCharacterEncoding("utf-8");
-		PrintWriter pw = response.getWriter();
-		DiskFileItemFactory factory = new DiskFileItemFactory(4*1024, new File(tempPath));
-		//为了接收jsp上传过来的inputStream
-		//fileupload对象
+		String path = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+		int num = path.indexOf(".metadata");
+		String realPath = path.substring(1,num).replace('/', '\\')+"db_OAS\\WebContent\\uploadFile";
+		System.err.println(realPath);
+		File f = new File(realPath);
+        if(!f.exists()&&!f.isDirectory()){
+            f.mkdir();
+        }
+		DiskFileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);//outputStream
 		upload.setSizeMax(15*1024*1024);
+		
+		Map<String, List<FileItem>> parseParameterMap;
 		try {
-			if(upload.isMultipartContent(request)){//判断是否是文件上传表单
-				List fileItems = upload.parseRequest(request); //request.getInputStream
-				Iterator<FileItem> it = fileItems.iterator();
-				while (it.hasNext()) {
-					FileItem item = it.next();
-					processUploadFile(item,pw);
-					pw.close();
-				}
-			}else{
-				log.info("文件不对");
-			}
+			parseParameterMap = upload.parseParameterMap(request);
+			Set<Entry<String, List<FileItem>>> entrySet = parseParameterMap.entrySet();
 			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			for (Entry<String, List<FileItem>> entry : entrySet) {
+				List<FileItem> file = entry.getValue();
+				for(FileItem fileItem : file) {
+					String name = fileItem.getName();
+					if(name == null || "".equals(name) ) {
+						return;
+					}
+					name = name.substring(name.lastIndexOf("\\")+1);
+	                String filePath = realPath+"\\"+name;
+	                InputStream in = fileItem.getInputStream();
+                    OutputStream out = new FileOutputStream(filePath);
+                       
+                    byte b[] = new byte[1024];
+                    int len = -1;
+                    while((len=in.read(b))!=-1){
+                        out.write(b, 0, len);
+                    }
+                    //关闭流
+                    out.close();
+                    in.close();
+				}
+			}
+		} catch (FileUploadException e) {
+			throw new RuntimeException("服务器繁忙，文件上传失败");
 		}
-
-
 	}
 	
 	private void processUploadFile(FileItem item ,PrintWriter pw) {

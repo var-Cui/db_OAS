@@ -45,6 +45,8 @@ public class NoticeServlet extends HttpServlet {
 		NoticeTypeDaoImpl noticeTypeDaoImpl = new NoticeTypeDaoImpl();
 		String action=request.getParameter("action");
 		if("add".equals(action)){
+			String file_name=request.getParameter("attachment1");
+			System.err.println(file_name);
 			String notice_name=request.getParameter("notice_name");
 			String notice_type=request.getParameter("notice_type");
 			String notice_promulgator=request.getParameter("notice_promulgator");
@@ -55,12 +57,7 @@ public class NoticeServlet extends HttpServlet {
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 			Date time=null;
 			try {
-				 time=(Date)sdf.parse(notice_releaseTime);
-				 System.out.println();
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			try {
+				time=(Date)sdf.parse(notice_releaseTime);
 				NoticeVo noticeVo =new NoticeVo();
 				noticeVo.setNotice_name(notice_name);
 				noticeVo.setNotice_type(Integer.valueOf(notice_type));
@@ -68,9 +65,9 @@ public class NoticeServlet extends HttpServlet {
 				noticeVo.setNotice_releaseTime(time);
 				noticeVo.setNotice_content(notice_content);
 				noticeDaoImpl.insertNotice(noticeVo);
-				System.out.println("增加成功！");
 				response.sendRedirect("noticeServlet?action=query");
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		} else if("updateNotice".equals(action)){
 			String id=request.getParameter("id");
@@ -126,7 +123,6 @@ public class NoticeServlet extends HttpServlet {
 	 		request.getRequestDispatcher("border_list.jsp").forward(request, response);
 		}  else if("querySelect".equals(action)){
 			String type=request.getParameter("type");
-			System.err.println(type);
 			List<NoticeVo> list = null;
 			if("0".equals(type)) {
 				list=noticeDaoImpl.queryStaff();
@@ -153,5 +149,4 @@ public class NoticeServlet extends HttpServlet {
 	 		request.getRequestDispatcher("noticeServlet?action=queryType").forward(request, response);
 		}
 	}
-
 }
