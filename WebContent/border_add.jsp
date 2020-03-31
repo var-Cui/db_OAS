@@ -110,13 +110,13 @@ body {
 				</tr>
 				</form>
 				<tr>
-				<form action="uploadServlet" id="form2" method="post" enctype="multipart/form-data">
+				<!-- <form action="uploadServlet" id="form2" method="post" enctype="multipart/form-data">
 					<td height="50" align="center" valign="middle" bgcolor="#FFFFFF">附件：</td>
 					<td height="40" align="left" valign="middle" bgcolor="#FFFFFF">&nbsp;
 						<input type="file" name="attachment1" id="file1" /> 
 						<input type="button" onclick="file()"   value="上传" />
 					</td>
-				</form>				
+				</form>			 -->	
 				</tr>
 				<tr>
 					<td height="25" colspan="2" align="center" valign="middle" bgcolor="#FFFFFF">
