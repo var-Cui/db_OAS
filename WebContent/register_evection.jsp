@@ -74,18 +74,18 @@ function checkForm(form){
 			<input name="type" type="hidden"   value="register_evection" />
           <td height="25" align="center" valign="middle" bgcolor="#FFFFFF">员工编码：</td>
           <td height="25" align="left" valign="middle" bgcolor="#FFFFFF">
-            &nbsp;<input name="register_staffNum" type="text"  value=${staffVo.staff_num}  style="border:0px;"></td>
+            &nbsp;<input name="register_staffNum" type="text"  value="${staffVo.staff_num}" style="border:0px;"></td>
         </tr>
         <tr>
           <td height="25" align="center" valign="middle" bgcolor="#FFFFFF">名字：</td>
           <td height="25" align="left" valign="middle" bgcolor="#FFFFFF">
-            &nbsp;<input name="register_name" type="text"   value=${staffVo.staff_name}  style="border:0px;"></td>
+            &nbsp;<input name="register_name" type="text"   value="${staffVo.staff_name}" style="border:0px;"></td>
         </tr>
   		
         <tr>
           <td height="25" align="center" valign="middle" bgcolor="#FFFFFF">所属部门：</td>
           <td height="25" align="left" valign="middle" bgcolor="#FFFFFF">
-            &nbsp;<input name="register_branch" type="text"  value=${staffVo.staff_branch} style="border:0px;"></td>
+            &nbsp;<input name="register_branch" type="text"  value="${staffVo.staff_branch}" style="border:0px;"></td>
         </tr>
 		
         <tr>
@@ -99,14 +99,14 @@ function checkForm(form){
         </tr>
         
         <tr>
-          <td height="25" align="center" valign="middle" bgcolor="#FFFFFF">请假开始时间:</td>
+          <td height="25" align="center" valign="middle" bgcolor="#FFFFFF">出差开始时间:</td>
           <td height="25" align="left" valign="middle" bgcolor="#FFFFFF">
-            &nbsp;<input id="register_startTime" name="register_startTime" type="text"  placeholder="<%="1998-10-14 08:30:00"%>"  style="border:0px;"></td>
+            &nbsp;<input id="register_startTime" name="register_startTime" type="text"  placeholder="<%="2020-02-02 09:00:00"%>"  style="border:0px;"></td>
         </tr>
         <tr>
-          <td height="25" align="center" valign="middle" bgcolor="#FFFFFF">请假结束时间:</td>
+          <td height="25" align="center" valign="middle" bgcolor="#FFFFFF">出差结束时间:</td>
           <td height="25" align="left" valign="middle" bgcolor="#FFFFFF">
-            &nbsp;<input id="register_endTime" name="register_endTime" type="text"  placeholder="<%="1998-10-15 08:30:00"%>"  style="border:0px;"></td>
+            &nbsp;<input id="register_endTime" name="register_endTime" type="text"  placeholder="<%="2020-02-02 09:00:00"%>"  style="border:0px;"></td>
         </tr>
 		 
 		 </td>

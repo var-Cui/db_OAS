@@ -78,18 +78,18 @@ a:active {
      <table width="100%" height="100%" border="0" cellspacing="1" cellpadding="0" bgcolor="#0077B2">
           
            <tr>
-             <td height="23" align="left" background="image/beijing.gif" class="STYLE1">&nbsp;公告标题</td>
-             <td height="23" align="left" background="image/beijing.gif" class="STYLE1">&nbsp;公告类别</td>
+             <td height="23" align="center" background="image/beijing.gif" class="STYLE1">&nbsp;公告标题</td>
+             <td height="23" align="center" background="image/beijing.gif" class="STYLE1">&nbsp;公告类别</td>
              <td width="22%" align="center" background="image/beijing.gif"><span class="STYLE1">发布时间</span></td>
-             <td height="23" align="left" background="image/beijing.gif" class="STYLE1">&nbsp;发布人</td>
-             <td height="23" align="left" background="image/beijing.gif" class="STYLE1">&nbsp;附件</td>
+             <td height="23" align="center" background="image/beijing.gif" class="STYLE1">&nbsp;发布人</td>
+             <td height="23" align="center" background="image/beijing.gif" class="STYLE1">&nbsp;附件</td>
              <td colspan="2" align="center" background="image/beijing.gif">&nbsp;操作</td>
            </tr>
           <c:forEach items="${list }" var="a">
            <tr>
-             <td height="25" align="left" bgcolor="#FFFFFF"><a href="noticeServlet?action=queryNotice&amp;id=${a.notice_id }">${a.notice_name }&nbsp;</a></td>
-             <td height="25" align="left" bgcolor="#FFFFFF"><a href="noticeServlet?action=queryNotice&amp;id=${a.notice_id }">${a.type }&nbsp;</a></td>
-             <td height="25" align="left" bgcolor="#FFFFFF"><a href="noticeServlet?action=queryNotice&amp;id=${a.notice_id }">${a.notice_releaseTime }&nbsp;</a></td> 
+             <td height="25" align="center" bgcolor="#FFFFFF"><a href="noticeServlet?action=queryNotice&amp;id=${a.notice_id }">${a.notice_name }&nbsp;</a></td>
+             <td height="25" align="center" bgcolor="#FFFFFF"><a href="noticeServlet?action=queryNotice&amp;id=${a.notice_id }">${a.type }&nbsp;</a></td>
+             <td height="25" align="center" bgcolor="#FFFFFF"><a href="noticeServlet?action=queryNotice&amp;id=${a.notice_id }">${a.notice_releaseTime }&nbsp;</a></td> 
              <td height="11" align="center" bgcolor="#FFFFFF"><a href="noticeServlet?action=queryNotice&amp;id=${a.notice_id }">${a.notice_promulgator }</a></td>
              <td height="11" align="center" bgcolor="#FFFFFF">&nbsp; <a href="downloadServlet">下载</a></td>
              <td width="7%" align="center" bgcolor="#FFFFFF"><a href="noticeServlet?action=delete&amp;id=${a.notice_id }">删除</a></td>

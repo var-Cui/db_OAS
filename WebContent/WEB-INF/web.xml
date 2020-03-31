@@ -198,4 +198,14 @@
     <servlet-name>BranchService</servlet-name>
     <url-pattern>/BranchService</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>MeetingServlet</display-name>
+    <servlet-name>MeetingServlet</servlet-name>
+    <servlet-class>com.lxitedu.st1610.servlet.MeetingServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MeetingServlet</servlet-name>
+    <url-pattern>/MeetingServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -22,12 +22,15 @@
         <td align="center" valign="top">
  <table width="100%"  border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td width="15%" align="center"><a href="planServlet?action=planPersonalList" style="COLOR: #ff0000;">我的个人计划</a> </td>
-    	<c:if test="${sessionScope.staffVo.staff_position eq a or sessionScope.staffVo.staff_position eq b}">   
-    <td width="10%"><a href="planServlet?action=planPersonalVerifyQuery" style="COLOR: #ff0000;">部长的个人计划</a> </td>
-	<td width="10%"><a href="planServlet?action=planPersonalRefuseQuery" style="COLOR: #ff0000;">员工的个人计划</a></td>
-	</c:if>
-	<td width="45%"></td>	  
+    <td width="13%" align="center"><a href="planServlet?action=planPersonalList&amp;status=0" style="COLOR: #ff0000;">查看全部计划</a> </td>
+    <td width="10%" align="center"><a href="planServlet?action=planPersonalList&amp;status=1" style="COLOR: #ff0000;">待审核</a> </td>
+    <td width="10%" align="center"><a href="planServlet?action=planPersonalList&amp;status=2" style="COLOR: #ff0000;">已通过</a> </td>
+    <td width="10%" align="center"><a href="planServlet?action=planPersonalList&amp;status=3" style="COLOR: #ff0000;">未通过</a> </td>
+   	<%-- <c:if test="${sessionScope.staffVo.staff_position eq a or sessionScope.staffVo.staff_position eq b}">   
+	    <td width="10%"><a href="planServlet?action=planPersonalVerifyQuery" style="COLOR: #ff0000;">部长的个人计划</a> </td>
+		<td width="10%"><a href="planServlet?action=planPersonalRefuseQuery" style="COLOR: #ff0000;">员工的个人计划</a></td>
+	</c:if> --%>
+	<td width="42%"></td>	  
 	<td width="20%" align="center"><a href="plan_personal_add.jsp">添加个人计划</a></td>	  
   </tr>
 </table>  
@@ -39,7 +42,7 @@
     <td width="11%" bgcolor="#afdeda">申请者</td>
     <td width="10%" bgcolor="#afdeda">部门</td>    
     <td width="27%" bgcolor="#afdeda">创建时间</td>
-    <td width="8%" bgcolor="#afdeda">查看类容</td>
+    <td width="8%" bgcolor="#afdeda">查看内容</td>
      <c:if test="${sessionScope.staffVo.staff_position eq a or sessionScope.staffVo.staff_position eq b}">
     	<c:if test="${skip eq 'planPersonalRefuseQuery'}">
     <td width="10%" bgcolor="#afdeda">评论</td>
@@ -51,10 +54,10 @@
   </tr>
   <c:forEach items="${planList}" var="v">
  	<tr>
-    <td style="padding:5px;">${v.plan_id }</td>  
-    <td style="padding:5px;">${v.plan_name }</td>
+    <td style="padding:5px;" align="center">${v.plan_id }</td>  
+    <td style="padding:5px;" align="center">${v.plan_name }</td>
     <td align="center">${v.plan_result }</td>
-    <td style="padding:5px;">${v.plan_promulgator }</td>
+    <td style="padding:5px;" align="center">${v.plan_promulgator }</td>
     <td align="center">${v.plan_branch }</td>
     <td align="center">${v.plan_foundTime }</td>  
     <td align="center"><a href="planServlet?action=planQuery&plan_id=${v.plan_id }">查看内容</a></td>

@@ -44,18 +44,20 @@
 </table>  
   <table width="98%"  border="1" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF" bordercolordark="#F6B83B" bordercolorlight="#0000CD">
   <tr align="center" bgcolor="#e3F4F7">
-    <td width="15%" bgcolor="#F9D16B">请假人员编号</td>  
+    <td width="15%" bgcolor="#F9D16B">人员编号</td>  
     <td width="9%" bgcolor="#F9D16B">姓名</td>
     <td width="10%" bgcolor="#F9D16B">登记类型</td>
-    <td width="12%" bgcolor="#F9D16B">登记时间</td> 
+    <td width="12%" bgcolor="#F9D16B">登记时间</td>
+    <td width="12%" bgcolor="#F9D16B">操作</td>  
   </tr>
    
 <c:forEach items="${registerVoList}" var="registerVo"  >
  <tr>
-    <td style="padding:5px;"><a href="registerParticularServlet?particularId=${registerVo.register_id}">${registerVo.register_staffNum}</a></td>  
-    <td style="padding:5px;">${registerVo.register_name}</td>
-    <td style="padding:5px;">${registerVo.register_type}</td>
-    <td style="padding:5px;"><fmt:formatDate value="${registerVo.register_startTime}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></td> 
+    <td style="padding:5px;" align="center">${registerVo.register_staffNum}</td>  
+    <td style="padding:5px;" align="center">${registerVo.register_name}</td>
+    <td style="padding:5px;" align="center">${registerVo.register_type}</td>
+    <td style="padding:5px;" align="center"><fmt:formatDate value="${registerVo.register_startTime}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></td> 
+    <td style="padding:5px;" align="center"><a style = "color: #333333;" href="registerParticularServlet?particularId=${registerVo.register_id}">详情</a></td>
   </tr>
 </c:forEach> 
 

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -18,87 +19,107 @@ body {
 	margin-top: 0px;
 	background-color: #E0E6F8;
 }
-.STYLE4 {
-	color: #FFFFFF;
+.STYLE2 {
+	color: #AA393C;
 	font-weight: bold;
-	font-size: 18px;
+	font-size: 24px;
+}
+.STYLE3{
+cursor:hand;
+}
+a:link {
+	text-decoration: none;
+	color: #0000CC;
+}
+a:visited {
+	text-decoration: none;
+	color: #0000CC;
+}
+a:hover {
+	text-decoration: underline;
+	color: #FF0099;
+}
+a:active {
+	text-decoration: none;
 }
 -->
 </style>
 </head>
+<script language="javascript">
+$(function() {
+	$("#meet_date").click(function() {
+		WdatePicker({
+			highLineWeekDay : true //周末高亮
+			,
+			readOnly : true //只读，只可用控件input中 修改内容
+			,
+			dateFmt : 'yyyy-MM-dd HH-mm-ss'
+		});
+	});
+});
+</script>
 <body>
-<form name="form1" method="post"  action="noticeServlet?action=add" style="margin-top:25px;" >
+<form name="form1" method="post" action="MeetingServlet?action=add" style="margin-top:25px;">
 <div class="dingwei">
-<table width="100%" height="25" border="0" cellspacing="0">
-  <tr>
-    <td align="center" background="image/beijing.gif"><span class="STYLE4">添加公告</span></td>
-  </tr>
-</table>
-
-<table width="100%" height="128" border="0" cellspacing="1" cellpadding="0" bgcolor="#0077B2">
-        <tr>
-          <td width="21%" height="30" align="center" bgcolor="#FFFFFF">公告标题：</td>
-          <td width="79%" align="left" bgcolor="#FFFFFF">&nbsp;
-		  <input name="notice_name" type="text" size="70" maxlength="50"></td>
-        </tr>
-        <tr>
-          <td width="21%" height="30" align="center" bgcolor="#FFFFFF">公告类别：</td>
-          <td width="79%" align="left" bgcolor="#FFFFFF">&nbsp;
-		   <select  style=" width : 29%; " name="notice_type">
-		  		<c:forEach items="${typeList }" var="t">
-	        		<option value="${t.id}">${t.type}</option>
-	        	</c:forEach>
-	      </select>
-		  </td>
-        </tr>
-        <tr>
-          <td height="30" align="center" valign="middle" bgcolor="#FFFFFF">发布人：</td>
-          <td height="31" align="left" valign="middle" bgcolor="#FFFFFF">&nbsp;
-		  <input name="notice_promulgator" type="text" value="${sessionScope.staffVo.staff_name}"></td>
-        </tr>
-		
-        <tr>
-          <td height="30" align="center" valign="middle" bgcolor="#FFFFFF">发布时间：</td>
-          <td height="15" align="left" valign="middle" bgcolor="#FFFFFF">&nbsp;
-		  <input id="issue_date" name="notice_releaseTime" type="text" value="" ></td>
-        </tr>
-        <tr>
-          <td height="50" align="center" valign="middle" bgcolor="#FFFFFF">公告内容：</td>
-          <td height="40" align="left" valign="middle" bgcolor="#FFFFFF">&nbsp;
-		  <input name="notice_content" type="text" value="" style=" width : 492px; height : 30px;"></td>
-        </tr>
-         <tr>
-        
-    	
-        </tr>
-         <tr>
-          <td height="25" colspan="2" align="center" valign="middle" bgcolor="#FFFFFF"><label>
-            <input type="submit" name="Submit" value="提交" />
-          </label></td>
-        </tr>
-        <tr>
-          <td height="30" colspan="2" align="right" valign="middle" bgcolor="#FFFFFF"><span onclick="history.go(-1)" style="cursor:hand;"><img src="image/return1.gif" width="70" height="20" /></span>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-        </tr>
-       </form> 
-       <form action="uploadServlet" method="post" enctype="multipart/form-data">
-          <td height="50" align="center" valign="middle" bgcolor="#FFFFFF">附件：</td>
-          <td height="40" align="left" valign="middle" bgcolor="#FFFFFF">&nbsp;
-        
-    		<input type="file" name="attachment1" />
-    		<input type="submit" value="上传"/>
-    	</form>
-    </table>
-</div>
-  <div style="width:700px; margin-left:25px;">
-   <input name="border_content" type="hidden" value="">
-  
-  <table width="550" border="0" align="center" cellspacing="0">
+  <table width="550" height="134" border="0" align="center" cellspacing="0">
     <tr>
-      <td align="center"><label>
-        
-      </label></td>
+      <td width="515" height="35" align="center"><span class="STYLE2">添加会议</span></td>
+    </tr>
+    <tr>
+      <td height="99" align="center" bgcolor="#4A7AC9"><table width="100%" height="82%" border="0" cellspacing="1">
+        <tr>
+          <td width="87" height="31" align="center" bgcolor="#FFFFFF">会议标题：</td>
+          <td colspan="3" align="left" bgcolor="#FFFFFF">&nbsp;
+          <input name="meet_theme" type="text" id="new_title" style="width: 95%;border:0px;" value="">
+          </td>
+        </tr>
+        <tr>
+          <td height="31" align="center" valign="middle" bgcolor="#FFFFFF">会议时间：</td>
+          <td width="195" height="31" align="left" valign="middle" bgcolor="#FFFFFF">
+		  &nbsp;
+		  <input name="meet_date" type="text" id="meet_date" style="border:0px;" value="" />
+		  </td>
+          <td width="81" height="31" align="center" valign="middle" bgcolor="#FFFFFF">是否公开：</td>
+          <td width="172" align="left" valign="middle" bgcolor="#FFFFFF">
+		  &nbsp;
+		  <label>
+		  是
+		  <input type="radio" name="is_open" value="是"  checked="checked" >
+		  &nbsp;
+		  否
+		  <input type="radio" name="is_open" value="否" >
+		  </label></td>
+        </tr>
+        <tr>
+          <td width="87" height="30" align="center" valign="middle" bgcolor="#FFFFFF">参加人员：</td>
+          <td height="30" colspan="3" align="left" valign="middle" bgcolor="#FFFFFF">
+		  &nbsp;
+		  <input name="join_people" type="text" style="border:0px;" size="60" value=""></td>
+          </tr>
+        <tr>
+          <td height="29" align="center" valign="middle" bgcolor="#FFFFFF">所属部门：</td>
+          <td height="29" align="left" valign="middle" bgcolor="#FFFFFF">
+		  &nbsp;
+		  <select style="width:70%;" name="branch_id">
+		  	<c:forEach items="${branchList }" var="b">
+				<option value="${b.branch_id}">${b.branch_name}</option>
+			</c:forEach>
+          </select> 
+          </td>
+          <td height="29" align="center" valign="middle" bgcolor="#FFFFFF">开会地点：</td>
+          <td height="29" align="left" valign="middle" bgcolor="#FFFFFF">
+		  &nbsp;
+		  <input name="meetingroom_name" type="text" style="border:0px;" value="" />
+          </td>
+        </tr>
+      </table>
+      </td>
+    </tr>
+    <tr>
+    <td align="center"><input type="submit" name="Submit" value="提交" /></td>
     </tr>
   </table>
   </div>
+</form>
 </body>
 </html>

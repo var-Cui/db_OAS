@@ -99,14 +99,14 @@ function checkForm(form){
         </tr>
        
         <tr>
-          <td height="25" align="center" valign="middle" bgcolor="#FFFFFF">请假开始时间:</td>
+          <td height="25" align="center" valign="middle" bgcolor="#FFFFFF">外出开始时间:</td>
           <td height="25" align="left" valign="middle" bgcolor="#FFFFFF">
-            &nbsp;<input id="register_startTime" name="register_startTime" type="text"  placeholder="<%="1998-10-14 08:30:00"%>"  style="border:0px;"></td>
+            &nbsp;<input id="register_startTime" name="register_startTime" type="text"  placeholder="<%="2020-02-02 09:00:00"%>"  style="border:0px;"></td>
         </tr>
         <tr>
-          <td height="25" align="center" valign="middle" bgcolor="#FFFFFF">请假结束时间:</td>
+          <td height="25" align="center" valign="middle" bgcolor="#FFFFFF">外出结束时间:</td>
           <td height="25" align="left" valign="middle" bgcolor="#FFFFFF">
-            &nbsp;<input id="register_endTime" name="register_endTime" type="text"  placeholder="<%="1998-10-15 08:30:00"%>"  style="border:0px;"></td>
+            &nbsp;<input id="register_endTime" name="register_endTime" type="text"  placeholder="<%="2020-02-02 09:00:00"%>"  style="border:0px;"></td>
         </tr>
 		 
 		 </td>

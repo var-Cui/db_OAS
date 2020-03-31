@@ -57,9 +57,24 @@ public class PlanServlet extends HttpServlet {
 		log.warn("进入计划PlanServlet");
 		if(("planPersonalList").equals(action)){
 			//个人计划首页迭代
-			log.warn("进入个人计划PlanLIst");	
-			String sql="select * from plan where plan_type='个人' and plan_promulgatorNum="+staffVo.getStaff_num()+" limit ?,?;";
-			String sql1 = "select count(1) from plan where plan_type='个人' and plan_promulgatorNum="+staffVo.getStaff_num()+";"; 
+			log.warn("进入个人计划PlanLIst");
+			String status=request.getParameter("status");
+			String sql="select * from plan where plan_type='个人' and plan_promulgatorNum="+staffVo.getStaff_num();
+			String sql1 = "select count(1) from plan where plan_type='个人' and plan_promulgatorNum="+staffVo.getStaff_num(); 
+			String planResult = "";
+			if( status != null ) {
+				if("0".equals(status)) {
+					planResult = " and 1 = 1";
+				} else if("1".equals(status)) {
+					planResult = " and plan_result = '待审核'";
+				} else if("2".equals(status)) {
+					planResult = " and plan_result = '已通过'";
+				} else if("3".equals(status)) {
+					planResult = " and plan_result = '未通过'";
+				}
+			}
+			sql += planResult + " limit ?,?;";
+			sql1 += planResult + ";";
 			PageVo p = new PageVo();
 			   p.setTotalCount(planDaoImpl.getPageCount(sql1));
 			  String currPageNo= request.getParameter("currPageNo");

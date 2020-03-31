@@ -44,7 +44,7 @@
 </table>  
   <table width="98%"  border="1" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF" bordercolordark="#F6B83B" bordercolorlight="#0000CD">
   <tr align="center" bgcolor="#e3F4F7">
-    <td width="15%" bgcolor="#F9D16B">请假人员编号</td>  
+    <td width="15%" bgcolor="#F9D16B">人员编号</td>  
     <td width="9%" bgcolor="#F9D16B">姓名</td>
     <td width="10%" bgcolor="#F9D16B">登记类型</td>
     <td width="10%" bgcolor="#F9D16B">状态</td>
@@ -54,11 +54,11 @@
 
 <c:forEach items="${punchVoList}" var="punchList"  >
   <tr>
-    <td style="padding:5px;">${punchList.punch_staffId}</td>  
-    <td style="padding:5px;">${punchList.punch_staffName}</td> 
-    <td style="padding:5px;">${punchList.punch_type}</td>
-    <td style="padding:5px;">${punchList.punch_result}</td>
-    <td style="padding:5px;"><fmt:formatDate value="${punchList.punch_time}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></td>  
+    <td style="padding:5px;" align="center">${punchList.punch_staffId}</td>  
+    <td style="padding:5px;" align="center">${punchList.punch_staffName}</td> 
+    <td style="padding:5px;" align="center">${punchList.punch_type}</td>
+    <td style="padding:5px;" align="center">${punchList.punch_result}</td>
+    <td style="padding:5px;" align="center"><fmt:formatDate value="${punchList.punch_time}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></td>  
   </tr>
 </c:forEach>
 </table>

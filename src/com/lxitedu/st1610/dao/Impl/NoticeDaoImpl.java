@@ -13,9 +13,7 @@ import com.lxitedu.st1610.vo.NoticeVo;
 public class NoticeDaoImpl {
 	//增加公告
 	public void insertNotice(NoticeVo noticeVo) {
-		// TODO Auto-generated method stub
 		Connection conn  = JDBCUtils.getConnection();
-
 		java.sql.Date sqlDate=new java.sql.Date(noticeVo.getNotice_releaseTime().getTime());
 		String sql="insert into notice(notice_name,notice_type,notice_promulgator,notice_releaseTime,notice_content) values(?,?,?,?,?)";
 		PreparedStatement  pstate =null;
@@ -26,11 +24,8 @@ public class NoticeDaoImpl {
 			pstate.setString(3, noticeVo.getNotice_promulgator());
 			pstate.setDate(4, sqlDate);
 			pstate.setString(5, noticeVo.getNotice_content());
-			
-			
 			pstate.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			JDBCUtils.closeAll(conn, pstate, null);
@@ -38,9 +33,7 @@ public class NoticeDaoImpl {
 	}
 	//修改公告
 	public void updateNotice(NoticeVo noticeVo) {
-		// TODO Auto-generated method stub
 		Connection conn  = JDBCUtils.getConnection();
-
 		java.sql.Date sqlDate=new java.sql.Date(noticeVo.getNotice_releaseTime().getTime());
 		String sql = "update notice set notice_name=?,notice_type=?,notice_promulgator=?,notice_releaseTime=?,notice_content=? where notice_id=?";
 		PreparedStatement  pstate =null;
@@ -54,7 +47,6 @@ public class NoticeDaoImpl {
 			pstate.setInt(6, noticeVo.getNotice_id());
 			pstate.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			JDBCUtils.closeAll(conn, pstate, null);
@@ -62,7 +54,6 @@ public class NoticeDaoImpl {
 	}
 	//查询公告
 	public List<NoticeVo> queryStaff() {
-		// TODO Auto-generated method stub
 		Connection conn  = JDBCUtils.getConnection();
 		PreparedStatement pre=null;
 		ResultSet res=null;
@@ -83,7 +74,6 @@ public class NoticeDaoImpl {
 				noticeVo=null;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			JDBCUtils.closeAll(conn, pre, res);
@@ -92,7 +82,6 @@ public class NoticeDaoImpl {
 	}
 	//按id查询公告类别
 	public NoticeVo queryNoticeTypeOne(String id) {
-		// TODO Auto-generated method stub
 		Connection conn  = JDBCUtils.getConnection();
 		PreparedStatement pre=null;
 		ResultSet res=null;
@@ -113,7 +102,6 @@ public class NoticeDaoImpl {
 				noticeVo.setNotice_result(res.getString("notice_result"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			JDBCUtils.closeAll(conn, pre, res);
@@ -122,7 +110,6 @@ public class NoticeDaoImpl {
 	}
 	//按公告类别查询公告
 	public ArrayList<NoticeVo> queryStaff(String type) {
-		// TODO Auto-generated method stub
 		Connection conn  = JDBCUtils.getConnection();
 		PreparedStatement pre=null;
 		ResultSet res=null;
@@ -144,7 +131,6 @@ public class NoticeDaoImpl {
 				noticeVo=null;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			JDBCUtils.closeAll(conn, pre, res);
@@ -153,7 +139,6 @@ public class NoticeDaoImpl {
 	}
 	//删除公告
 	public void deleteNotice(int id) {
-		// TODO Auto-generated method stub
 		Connection con=(Connection)JDBCUtils.getConnection();
 		String sql="delete from notice where notice_id=? ";
 		PreparedStatement pre = null;
