@@ -9,24 +9,35 @@ import java.util.List;
 
 import com.lxitedu.st1610.util.JDBCUtils;
 import com.lxitedu.st1610.vo.NoticeVo;
+import com.mysql.jdbc.Statement;
 
 public class NoticeDaoImpl {
 	//增加公告
-	public void insertNotice(NoticeVo noticeVo) {
+	public int insertNotice(NoticeVo noticeVo) {
 		Connection conn  = JDBCUtils.getConnection();
 		java.sql.Date sqlDate=new java.sql.Date(noticeVo.getNotice_releaseTime().getTime());
-		String sql="insert into notice(notice_name,notice_type,notice_promulgator,notice_releaseTime,notice_content) values(?,?,?,?,?)";
+		String sql="insert into notice(notice_name,notice_type,notice_promulgator,notice_releaseTime,notice_content,file_name) values(?,?,?,?,?,?)";
 		PreparedStatement  pstate =null;
+		int idNo = 0;
 		try {
-			pstate =conn.prepareStatement(sql);
+			pstate=conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 			pstate.setString(1, noticeVo.getNotice_name());
 			pstate.setInt(2, noticeVo.getNotice_type());
 			pstate.setString(3, noticeVo.getNotice_promulgator());
 			pstate.setDate(4, sqlDate);
 			pstate.setString(5, noticeVo.getNotice_content());
-			pstate.executeUpdate();
+			pstate.setString(6, noticeVo.getFile_name());
+			if(pstate.executeUpdate() > 0 ){
+				ResultSet rs = pstate.getGeneratedKeys();
+				if(rs.next()){
+					idNo = rs.getInt(1);
+				}
+				rs.close();//释放资源
+			}
+			return idNo;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return idNo;
 		}finally{
 			JDBCUtils.closeAll(conn, pstate, null);
 		}
@@ -70,6 +81,7 @@ public class NoticeDaoImpl {
 				noticeVo.setNotice_promulgator(res.getString("notice_promulgator"));
 				noticeVo.setNotice_releaseTime(res.getDate("notice_releaseTime"));
 				noticeVo.setNotice_content(res.getString("notice_content"));
+				noticeVo.setFile_name(res.getString("file_name"));
 				list.add(noticeVo);
 				noticeVo=null;
 			}
@@ -100,6 +112,7 @@ public class NoticeDaoImpl {
 				noticeVo.setNotice_content(res.getString("notice_content"));
 				noticeVo.setNotice_assentor(res.getString("notice_assentor"));
 				noticeVo.setNotice_result(res.getString("notice_result"));
+				noticeVo.setFile_name(res.getString("file_name"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

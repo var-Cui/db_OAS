@@ -11,6 +11,13 @@ public class NoticeVo {
 	private String notice_assentor;
 	private String notice_result;
 	private String notice_note;
+	private String file_name;
+	public String getFile_name() {
+		return file_name;
+	}
+	public void setFile_name(String file_name) {
+		this.file_name = file_name;
+	}
 	private Date notice_releaseTime;
 	public String getType() {
 		return type;

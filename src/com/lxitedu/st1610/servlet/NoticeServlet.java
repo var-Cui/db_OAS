@@ -1,5 +1,6 @@
 package com.lxitedu.st1610.servlet;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,10 +13,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import com.lxitedu.st1610.dao.Impl.NoticeDaoImpl;
 import com.lxitedu.st1610.dao.Impl.NoticeTypeDaoImpl;
 import com.lxitedu.st1610.vo.NoticeTypeVO;
 import com.lxitedu.st1610.vo.NoticeVo;
+
+import cn.lxitedu.st1610.util.FileUtils;
 
 /**
  * Servlet implementation class NoticeServlet
@@ -44,19 +51,44 @@ public class NoticeServlet extends HttpServlet {
 		NoticeDaoImpl noticeDaoImpl=new NoticeDaoImpl();
 		NoticeTypeDaoImpl noticeTypeDaoImpl = new NoticeTypeDaoImpl();
 		String action=request.getParameter("action");
+		
+		DiskFileItemFactory factory = new DiskFileItemFactory();
+		ServletFileUpload upload = new ServletFileUpload(factory);//outputStream
+		upload.setHeaderEncoding("UTF-8");
+		
 		if("add".equals(action)){
-			String file_name=request.getParameter("attachment1");
-			System.err.println(file_name);
-			String notice_name=request.getParameter("notice_name");
-			String notice_type=request.getParameter("notice_type");
-			String notice_promulgator=request.getParameter("notice_promulgator");
-			String notice_releaseTime=request.getParameter("notice_releaseTime");
-			String notice_content=request.getParameter("notice_content");
-			System.out.println("ÄÃµ½µÄÖµ£º"+notice_name+"\t"+notice_promulgator+"\t"+notice_releaseTime+"\t"+notice_content);
-			
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-			Date time=null;
 			try {
+				String savePath = this.getServletContext().getRealPath("/uploadFile");
+				List<FileItem> items = upload.parseRequest(request);
+				String notice_name = "";
+				String notice_type = "";
+				String notice_promulgator = "";
+				String notice_releaseTime = "";
+				String notice_content = "";
+				String fileName = "";
+				FileItem f = null;
+				if(items != null) {
+					for (FileItem fileItem : items) {
+						if(fileItem.isFormField()) {
+						    if ("notice_name".equals(fileItem.getFieldName())) {
+						    	notice_name = fileItem.getString("UTF-8");
+							} else if ("notice_type".equals(fileItem.getFieldName())) {
+								notice_type = fileItem.getString("UTF-8");
+							} else if ("notice_promulgator".equals(fileItem.getFieldName())) {
+								notice_promulgator = fileItem.getString("UTF-8");
+							} else if ("notice_releaseTime".equals(fileItem.getFieldName())) {
+								notice_releaseTime = fileItem.getString("UTF-8");
+							} else if ("notice_content".equals(fileItem.getFieldName())) {
+								notice_content = fileItem.getString("UTF-8");
+							}
+						} else {
+							fileName = new File(fileItem.getName()).getName();
+							f = fileItem;
+						}
+					}
+				} 
+				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+				Date time=null;
 				time=(Date)sdf.parse(notice_releaseTime);
 				NoticeVo noticeVo =new NoticeVo();
 				noticeVo.setNotice_name(notice_name);
@@ -64,7 +96,10 @@ public class NoticeServlet extends HttpServlet {
 				noticeVo.setNotice_promulgator(notice_promulgator);
 				noticeVo.setNotice_releaseTime(time);
 				noticeVo.setNotice_content(notice_content);
-				noticeDaoImpl.insertNotice(noticeVo);
+				noticeVo.setFile_name(fileName);
+				int insertNotice = noticeDaoImpl.insertNotice(noticeVo);
+				savePath += File.separator +insertNotice;
+				FileUtils.uploadFile(savePath, fileName,f);
 				response.sendRedirect("noticeServlet?action=query");
 			} catch (Exception e) {
 				e.printStackTrace();

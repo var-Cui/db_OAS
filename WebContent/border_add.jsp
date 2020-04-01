@@ -52,18 +52,9 @@ body {
 			}
 		}
 	}
-
-	function submitForm() {
-		console.log($("#file1"));
-		$("#form1").submit();
-	}
-
-	function file() {
-		$("#form2").submit();
-	}
 </script>
 <body>
-	<form name="form1" method="post" id="form1" action="noticeServlet?action=add" style="margin-top: 25px;">
+	<form name="form1" method="post" id="form1" action="noticeServlet?action=add" enctype="multipart/form-data" style="margin-top: 25px;">
 		<div class="dingwei">
 			<table width="100%" height="25" border="0" cellspacing="0">
 				<tr>
@@ -106,22 +97,17 @@ body {
 					<td height="40" align="left" valign="middle" bgcolor="#FFFFFF">&nbsp;
 						<input name="notice_content" type="text" value="" style="width: 492px; height: 30px;">
 					</td>
-					<input id="fileName" type="hidden" name="fileName" />
 				</tr>
-				</form>
 				<tr>
-				<!-- <form action="uploadServlet" id="form2" method="post" enctype="multipart/form-data">
 					<td height="50" align="center" valign="middle" bgcolor="#FFFFFF">附件：</td>
 					<td height="40" align="left" valign="middle" bgcolor="#FFFFFF">&nbsp;
-						<input type="file" name="attachment1" id="file1" /> 
-						<input type="button" onclick="file()"   value="上传" />
+						<input type="file" name="fileName" id="file1" /> 
 					</td>
-				</form>			 -->	
 				</tr>
 				<tr>
 					<td height="25" colspan="2" align="center" valign="middle" bgcolor="#FFFFFF">
 					<label> 
-						<input type="button" onclick="submitForm()" value="提交" />
+						<input type="submit" value="提交" />
 					</label>
 					</td>
 				</tr>
@@ -133,5 +119,6 @@ body {
 				</tr>
 			</table>
 		</div>
+	</form>
 </body>
 </html>

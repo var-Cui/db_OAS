@@ -20,11 +20,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
-
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 
 
@@ -64,49 +63,85 @@ public class UploadServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String path = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-		int num = path.indexOf(".metadata");
-		String realPath = path.substring(1,num).replace('/', '\\')+"db_OAS\\WebContent\\uploadFile";
-		System.err.println(realPath);
-		File f = new File(realPath);
-        if(!f.exists()&&!f.isDirectory()){
-            f.mkdir();
-        }
+		String savePath = this.getServletContext().getRealPath("/uploadFile");
+		File file = new File(savePath);
+		if(!file.exists() && !file.isDirectory()) {
+			file.mkdir();
+		}
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);//outputStream
 		upload.setSizeMax(15*1024*1024);
-		
-		Map<String, List<FileItem>> parseParameterMap;
 		try {
-			parseParameterMap = upload.parseParameterMap(request);
-			Set<Entry<String, List<FileItem>>> entrySet = parseParameterMap.entrySet();
-			
-			for (Entry<String, List<FileItem>> entry : entrySet) {
-				List<FileItem> file = entry.getValue();
-				for(FileItem fileItem : file) {
-					String name = fileItem.getName();
-					if(name == null || "".equals(name) ) {
-						return;
+			List<FileItem> items = upload.parseRequest(request);
+			if(items != null) {
+				for (FileItem fileItem : items) {
+					if(fileItem.isFormField()) {
+					} else {
+						String fileName = new File(fileItem.getName()).getName();
+						fileName = fileName.substring(fileName.lastIndexOf("\\")+1);
+		                String filePath = savePath+"\\"+fileName;
+		                System.err.println(filePath);
+						InputStream in = fileItem.getInputStream();
+	                    OutputStream out = new FileOutputStream(filePath);
+	                    byte b[] = new byte[1024];
+	                    int len = -1;
+	                    while((len=in.read(b))!=-1){
+	                        out.write(b, 0, len);
+	                    }
+	                    //关闭流
+	                    out.close();
+	                    in.close();
 					}
-					name = name.substring(name.lastIndexOf("\\")+1);
-	                String filePath = realPath+"\\"+name;
-	                InputStream in = fileItem.getInputStream();
-                    OutputStream out = new FileOutputStream(filePath);
-                       
-                    byte b[] = new byte[1024];
-                    int len = -1;
-                    while((len=in.read(b))!=-1){
-                        out.write(b, 0, len);
-                    }
-                    //关闭流
-                    out.close();
-                    in.close();
 				}
 			}
 		} catch (FileUploadException e) {
-			throw new RuntimeException("服务器繁忙，文件上传失败");
+			e.printStackTrace();
 		}
+		
+		
+		
+//		String path = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+//		int num = path.indexOf(".metadata");
+//		String realPath = path.substring(1,num).replace('/', '\\')+"db_OAS\\WebContent\\uploadFile";
+//		System.err.println(realPath);
+//		File f = new File(realPath);
+//        if(!f.exists()&&!f.isDirectory()){
+//            f.mkdir();
+//        }
+//		DiskFileItemFactory factory = new DiskFileItemFactory();
+//		ServletFileUpload upload = new ServletFileUpload(factory);//outputStream
+//		upload.setSizeMax(15*1024*1024);
+//		
+//		Map<String, List<FileItem>> parseParameterMap;
+//		try {
+//			parseParameterMap = upload.parseParameterMap(request);
+//			Set<Entry<String, List<FileItem>>> entrySet = parseParameterMap.entrySet();
+//			
+//			for (Entry<String, List<FileItem>> entry : entrySet) {
+//				List<FileItem> file = entry.getValue();
+//				for(FileItem fileItem : file) {
+//					String name = fileItem.getName();
+//					if(name == null || "".equals(name) ) {
+//						return;
+//					}
+//					name = name.substring(name.lastIndexOf("\\")+1);
+//	                String filePath = realPath+"\\"+name;
+//	                InputStream in = fileItem.getInputStream();
+//                    OutputStream out = new FileOutputStream(filePath);
+//                       
+//                    byte b[] = new byte[1024];
+//                    int len = -1;
+//                    while((len=in.read(b))!=-1){
+//                        out.write(b, 0, len);
+//                    }
+//                    //关闭流
+//                    out.close();
+//                    in.close();
+//				}
+//			}
+//		} catch (FileUploadException e) {
+//			throw new RuntimeException("服务器繁忙，文件上传失败");
+//		}
 	}
 	
 	private void processUploadFile(FileItem item ,PrintWriter pw) {
