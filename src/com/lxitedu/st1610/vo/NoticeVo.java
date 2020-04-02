@@ -12,6 +12,13 @@ public class NoticeVo {
 	private String notice_result;
 	private String notice_note;
 	private String file_name;
+	private String oldFileName;
+	public String getOldFileName() {
+		return oldFileName;
+	}
+	public void setOldFileName(String oldFileName) {
+		this.oldFileName = oldFileName;
+	}
 	public String getFile_name() {
 		return file_name;
 	}

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -55,10 +56,10 @@ public class NoticeServlet extends HttpServlet {
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);//outputStream
 		upload.setHeaderEncoding("UTF-8");
+		String savePath = this.getServletContext().getRealPath("/uploadFile");
 		
 		if("add".equals(action)){
 			try {
-				String savePath = this.getServletContext().getRealPath("/uploadFile");
 				List<FileItem> items = upload.parseRequest(request);
 				String notice_name = "";
 				String notice_type = "";
@@ -112,29 +113,60 @@ public class NoticeServlet extends HttpServlet {
 			request.setAttribute("noticeVo", noticeVo);
 	 		request.getRequestDispatcher("border_edit.jsp").forward(request, response);
 		} else if("update".equals(action)){
-			String notice_name=request.getParameter("notice_name");
-			String notice_type=request.getParameter("notice_type");
-			String notice_promulgator=request.getParameter("notice_promulgator");
-			String notice_releaseTime=request.getParameter("notice_releaseTime");
-			String notice_content=request.getParameter("notice_content");
-			String notice_id=request.getParameter("notice_id");
-			
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-			Date time=null;
 			try {
-				 time=(Date)sdf.parse(notice_releaseTime);
-			} catch (ParseException e) {
+				List<FileItem> items = upload.parseRequest(request);
+				String notice_name = "";
+				String notice_type = "";
+				String notice_promulgator = "";
+				String notice_releaseTime = "";
+				String notice_content = "";
+				String fileName = "";
+				String notice_id = "";
+				FileItem f = null;
+				if(items != null) {
+					for (FileItem fileItem : items) {
+						if(fileItem.isFormField()) {
+						    if ("notice_name".equals(fileItem.getFieldName())) {
+						    	notice_name = fileItem.getString("UTF-8");
+							} else if ("notice_type".equals(fileItem.getFieldName())) {
+								notice_type = fileItem.getString("UTF-8");
+							} else if ("notice_promulgator".equals(fileItem.getFieldName())) {
+								notice_promulgator = fileItem.getString("UTF-8");
+							} else if ("notice_releaseTime".equals(fileItem.getFieldName())) {
+								notice_releaseTime = fileItem.getString("UTF-8");
+							} else if ("notice_content".equals(fileItem.getFieldName())) {
+								notice_content = fileItem.getString("UTF-8");
+							} else if ("notice_id".equals(fileItem.getFieldName())) {
+								notice_id = fileItem.getString("UTF-8");
+							}
+						} else {
+							fileName = new File(fileItem.getName()).getName();
+							f = fileItem;
+						}
+					}
+				} 
+				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+				Date time=null;
+				time=(Date)sdf.parse(notice_releaseTime);
+				NoticeVo noticeVo =new NoticeVo();
+				noticeVo.setNotice_id(Integer.valueOf(notice_id));
+				noticeVo.setNotice_name(notice_name);
+				noticeVo.setNotice_type(Integer.valueOf(notice_type));
+				noticeVo.setNotice_promulgator(notice_promulgator);
+				noticeVo.setNotice_releaseTime(time);
+				noticeVo.setNotice_content(notice_content);
+				noticeVo.setFile_name(fileName);
+				NoticeVo old = noticeDaoImpl.queryNoticeTypeOne(notice_id);
+				noticeVo.setOldFileName(old.getFile_name());
+				noticeDaoImpl.updateNotice(noticeVo);
+				if(!"".equals(fileName) && (fileName != null)) {
+					savePath += File.separator +notice_id;
+					FileUtils.uploadFile(savePath, fileName,f);
+				}
+				response.sendRedirect("noticeServlet?action=query");
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			NoticeVo noticeVo =new NoticeVo();
-			noticeVo.setNotice_id(Integer.valueOf(notice_id));
-			noticeVo.setNotice_name(notice_name);
-			noticeVo.setNotice_type(Integer.valueOf(notice_type));
-			noticeVo.setNotice_promulgator(notice_promulgator);
-			noticeVo.setNotice_releaseTime(time);
-			noticeVo.setNotice_content(notice_content);
-			noticeDaoImpl.updateNotice(noticeVo);
-			response.sendRedirect("noticeServlet?action=query");
 		} else if("queryNotice".equals(action)){
 			String id=request.getParameter("id");
 			NoticeVo noticeVo = noticeDaoImpl.queryNoticeTypeOne(id);
@@ -147,6 +179,25 @@ public class NoticeServlet extends HttpServlet {
 			request.setAttribute("typeList", queryNoticeType);
 	 		request.getRequestDispatcher("border_add.jsp").forward(request, response);
 		} else if("delete".equals(action)){
+			String id = request.getParameter("id");
+			NoticeVo noticeVo = noticeDaoImpl.queryNoticeTypeOne(id);
+			String name = noticeVo.getFile_name();
+			if((!"".equals(name)) && name != null) {
+				String path = request.getServletContext().getRealPath("/uploadFile");
+				path += File.separator + id;
+				File file = new File(path);
+				if(file.exists()) {
+					File[] listFiles = file.listFiles();
+					if(listFiles != null) {
+						for (File file2 : listFiles) {
+							if(file2.isFile()) {
+								file2.delete();
+							}
+						}
+					}
+					file.delete();
+				}
+			}
 			noticeDaoImpl.deleteNotice(Integer.valueOf(request.getParameter("id")));
 	 		request.getRequestDispatcher("noticeServlet?action=query").forward(request, response);
 		} else if("query".equals(action)){

@@ -40,7 +40,7 @@ $(function(){
 });
 </script>
 <body>
-<form name="form1" method="post" action="noticeServlet?action=update" style="margin-top:25px;">
+<form name="form1" method="post" action="noticeServlet?action=update"  enctype="multipart/form-data" style="margin-top:25px;">
 <div class="dingwei">
 <table width="100%" height="25" border="0" cellspacing="0">
   <tr>
@@ -82,6 +82,12 @@ $(function(){
 		  <input name="notice_content" type="text" value="${noticeVo.notice_content}" style=" width : 492px; height : 30px;"></td>
 		 
         </tr>
+        <tr>
+			<td height="50" align="center" valign="middle" bgcolor="#FFFFFF">附件：</td>
+			<td height="40" align="left" valign="middle" bgcolor="#FFFFFF">&nbsp;
+				<input type="file" name="fileName" id="file1" /> 
+			</td>
+		</tr>
          <tr>
           <td height="25" colspan="2" align="center" valign="middle" bgcolor="#FFFFFF"><label>
             <input type="submit" name="Submit" value="提交" />

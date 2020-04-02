@@ -46,7 +46,7 @@ public class NoticeDaoImpl {
 	public void updateNotice(NoticeVo noticeVo) {
 		Connection conn  = JDBCUtils.getConnection();
 		java.sql.Date sqlDate=new java.sql.Date(noticeVo.getNotice_releaseTime().getTime());
-		String sql = "update notice set notice_name=?,notice_type=?,notice_promulgator=?,notice_releaseTime=?,notice_content=? where notice_id=?";
+		String sql = "update notice set notice_name=?,notice_type=?,notice_promulgator=?,notice_releaseTime=?,notice_content=?,file_name =? where notice_id=?";
 		PreparedStatement  pstate =null;
 		try {
 			pstate =conn.prepareStatement(sql);
@@ -55,7 +55,12 @@ public class NoticeDaoImpl {
 			pstate.setString(3, noticeVo.getNotice_promulgator());
 			pstate.setDate(4, sqlDate);
 			pstate.setString(5, noticeVo.getNotice_content());
-			pstate.setInt(6, noticeVo.getNotice_id());
+			if(noticeVo.getFile_name() != null && (!"".equals(noticeVo.getFile_name()))) {
+				pstate.setString(6, noticeVo.getFile_name());
+			} else {
+				pstate.setString(6, noticeVo.getOldFileName());
+			}
+			pstate.setInt(7, noticeVo.getNotice_id());
 			pstate.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

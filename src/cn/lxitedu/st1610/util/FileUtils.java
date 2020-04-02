@@ -12,6 +12,16 @@ public class FileUtils {
 	
 	public static void uploadFile(String path,String fileName,FileItem fileItem) {
 		File file = new File(path);
+		if(file.exists()) {
+			File[] listFiles = file.listFiles();
+			if(listFiles != null) {
+				for (File file2 : listFiles) {
+					if(file2.isFile()) {
+						file2.delete();
+					}
+				}
+			}
+		}
 		if(!file.exists() && !file.isDirectory()) {
 			file.mkdir();
 		}
