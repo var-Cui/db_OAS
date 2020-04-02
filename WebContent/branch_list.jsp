@@ -29,7 +29,7 @@
   </tr>
 </table>  
   <table width="95%"  border="1" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF" bordercolordark="#F6B83B" bordercolorlight="#FFFFFF">
-  <tr align="left" bgcolor="#e3F4F7">
+  <tr align="center" bgcolor="#e3F4F7">
     <td width="15%" bgcolor="#F9D16B">部门</td>  
     <td width="15%" bgcolor="#F9D16B">部长</td>
     <td width="45%" bgcolor="#F9D16B">部门描述</td>
@@ -39,10 +39,10 @@
   </tr>
   <c:forEach items="${list }" var="result"> <!-- 标签  -->
  		<tr>
-		    <td style="padding:5px;">${result.branch_name }</td>
-		    <td style="padding:5px;">${result.branch_minister }</td>
-		    <td style="padding:5px;">${result.branch_summarize}</td>
-		    <td style="padding:5px;">${result.branch_time }</td>
+		    <td align="center" style="padding:5px;">${result.branch_name }</td>
+		    <td align="center" style="padding:5px;">${result.branch_minister }</td>
+		    <td align="center" style="padding:5px;">${result.branch_summarize}</td>
+		    <td align="center" style="padding:5px;">${result.branch_time }</td>
 		    <td align="center"><a href="branchServlet?action=queryName&branch_name=${result.branch_name}">修改</a></td>
 		    <td align="center"><a href="branchServlet?action=delete&branch_id=${result.branch_id}">删除</a></td>
  		 </tr>

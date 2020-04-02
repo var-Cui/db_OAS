@@ -50,7 +50,7 @@ function check(form){
   <tr>
     <td align="center" bgcolor="#F9D16B">
 
-&nbsp;<img src="./image/search1.gif" width="45" height="28"></td>
+&nbsp;<img src="image/search1.gif" width="45" height="28"></td>
     <td bgcolor="#F9D16B">请选择查询依据：
       <select name="f" class="wenbenkuang" id="f">
         <option value="num">编号</option>
@@ -66,26 +66,26 @@ function check(form){
   </form>
   <table width="95%"  border="1" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF" bordercolordark="#F6B83B" bordercolorlight="#FFFFFF">
   <tr align="left" bgcolor="#e3F4F7">
-    <td width="13%" bgcolor="#F9D16B">编号</td>  
-    <td width="10%" bgcolor="#F9D16B">名字</td>
-    <td width="9%" bgcolor="#F9D16B">性别</td>
-    <td width="11%" bgcolor="#F9D16B">出生日期</td>
-    <td width="20%" bgcolor="#F9D16B">所属部门</td>
-    <td width="12%" bgcolor="#F9D16B">职位</td>
-    <td width="15%" bgcolor="#F9D16B">入职时间</td>
-    <c:if test="${sessionScope.staffVo.staff_position ne '普通员工'}"><td width="5%" bgcolor="#F9D16B">修改</td></c:if>
-    <c:if test="${sessionScope.staffVo.staff_position ne '普通员工'}"><td width="5%" bgcolor="#F9D16B">删除</td></c:if>
+    <td width="5%" align="center" bgcolor="#F9D16B">编号</td>  
+    <td width="10%" align="center" bgcolor="#F9D16B">名字</td>
+    <td width="5%"  align="center" bgcolor="#F9D16B">性别</td>
+    <td width="20%" align="center" bgcolor="#F9D16B">出生日期</td>
+    <td width="15%" align="center" bgcolor="#F9D16B">所属部门</td>
+    <td width="12%" align="center" bgcolor="#F9D16B">职位</td>
+    <td width="15%" align="center" bgcolor="#F9D16B">入职时间</td>
+    <c:if test="${sessionScope.staffVo.staff_position ne '普通员工'}"><td width="5%" align="center" bgcolor="#F9D16B">修改</td></c:if>
+    <c:if test="${sessionScope.staffVo.staff_position ne '普通员工'}"><td width="5%" align="center" bgcolor="#F9D16B">删除</td></c:if>
   </tr>
 
    <c:forEach items="${list}" var="result"> <!-- 标签  -->
  		<tr>
-		    <td style="padding:5px;">${result.staff_num }</td>
-		    <td style="padding:5px;">${result.staff_name }</td>
-		    <td style="padding:5px;">${result.staff_sex}</td>
-		    <td style="padding:5px;">${result.staff_birthdate }</td>
-		    <td style="padding:7px;">${result.staff_branch }</td>
-		    <td style="padding:5px;">${result.staff_position }</td>
-		    <td style="padding:7px;">${result.staff_enterTime }</td>
+		    <td align="center" style="padding:5px;">${result.staff_num }</td>
+		    <td align="center" style="padding:5px;">${result.staff_name }</td>
+		    <td align="center" style="padding:5px;">${result.staff_sex}</td>
+		    <td align="center" style="padding:5px;">${result.staff_birthdate }</td>
+		    <td align="center" style="padding:7px;">${result.staff_branch }</td>
+		    <td align="center" style="padding:5px;">${result.staff_position }</td>
+		    <td align="center" style="padding:7px;">${result.staff_enterTime }</td>
 		<c:if test="${sessionScope.staffVo.staff_position ne '普通员工'}">  <td align="center"><a href="staffServlet?action=queryInfo&user_id=${result.staff_id}">修改</a></td></c:if> 
 		<c:if test="${sessionScope.staffVo.staff_position ne '普通员工'}">    <td align="center"><a href="staffServlet?action=delete&staff_id=${result.staff_id}">删除</a></td></c:if>
  		 </tr>
@@ -106,7 +106,7 @@ function check(form){
 		<c:if test="${sessionScope.staffVo.staff_position ne '普通员工'}">    <td align="center"><a href="staffServlet?action=delete&staff_id=${result.staff_id}">删除</a></td></c:if>
  		 </tr>
  </c:forEach>
- <td align="left" colspan="7">
+ <td align="center" colspan="7">
  
     	 	<%--
     	 	需求： 

@@ -218,8 +218,8 @@ public class StaffDaoImpl implements StaffDao{
 		StaffVo staffVo=null;
 		ArrayList<StaffVo> list=new ArrayList<StaffVo>();
 		try {
-			pre=conn.prepareStatement("select * from staff where staff_position=?;");
-			pre.setString(1, staff_position);
+			pre=conn.prepareStatement("select * from staff where staff_position like ?;");
+			pre.setString(1, "%"+staff_position+"%");
 			res=pre.executeQuery();
 			while(res.next()){
 				staffVo =new StaffVo();
@@ -244,15 +244,15 @@ public class StaffDaoImpl implements StaffDao{
 		return list;
 	}
 	//±‡∫≈≤È—Ø
-		public ArrayList<StaffVo> queryStaff_num(int staff_num){
+		public ArrayList<StaffVo> queryStaff_num(String staff_num){
 			Connection conn  = JDBCUtils.getConnection();
 			PreparedStatement pre=null;
 			ResultSet res=null;
 			StaffVo staffVo=null;
 			ArrayList<StaffVo> list=new ArrayList<StaffVo>();
 			try {
-				pre=conn.prepareStatement("select * from staff where staff_num=?;");
-				pre.setInt(1, staff_num);
+				pre=conn.prepareStatement("select * from staff where staff_num like ?;");
+				pre.setString(1, "%"+staff_num+"%");
 				res=pre.executeQuery();
 				while(res.next()){
 					staffVo =new StaffVo();
@@ -284,8 +284,8 @@ public class StaffDaoImpl implements StaffDao{
 					StaffVo staffVo=null;
 					ArrayList<StaffVo> list=new ArrayList<StaffVo>();
 					try {
-						pre=conn.prepareStatement("select * from staff where staff_name=?;");
-						pre.setString(1, staff_name);
+						pre=conn.prepareStatement("select * from staff where staff_name like ?;");
+						pre.setString(1, "%"+staff_name+"%");
 						res=pre.executeQuery();
 						while(res.next()){
 							staffVo =new StaffVo();
@@ -317,8 +317,8 @@ public class StaffDaoImpl implements StaffDao{
 					StaffVo staffVo=null;
 					ArrayList<StaffVo> list=new ArrayList<StaffVo>();
 					try {
-						pre=conn.prepareStatement("select * from staff where staff_sex=?;");
-						pre.setString(1, staff_sex);
+						pre=conn.prepareStatement("select * from staff where staff_sex like ?;");
+						pre.setString(1, "%"+staff_sex+"%");
 						res=pre.executeQuery();
 						while(res.next()){
 							staffVo =new StaffVo();
@@ -350,8 +350,8 @@ public class StaffDaoImpl implements StaffDao{
 					StaffVo staffVo=null;
 					ArrayList<StaffVo> list=new ArrayList<StaffVo>();
 					try {
-						pre=conn.prepareStatement("select * from staff where staff_branch=?;");
-						pre.setString(1, staff_branch);
+						pre=conn.prepareStatement("select * from staff where staff_branch like ?;");
+						pre.setString(1, "%"+staff_branch+"%");
 						res=pre.executeQuery();
 						while(res.next()){
 							staffVo =new StaffVo();

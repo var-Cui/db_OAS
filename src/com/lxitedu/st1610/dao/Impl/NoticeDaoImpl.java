@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.lxitedu.st1610.util.JDBCUtils;
@@ -145,6 +147,34 @@ public class NoticeDaoImpl {
 				noticeVo.setNotice_promulgator(res.getString("notice_promulgator"));
 				noticeVo.setNotice_releaseTime(res.getDate("notice_releaseTime"));
 				noticeVo.setNotice_content(res.getString("notice_content"));
+				list.add(noticeVo);
+				noticeVo=null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			JDBCUtils.closeAll(conn, pre, res);
+		}
+		return list;
+	}
+	//查询今日公告
+	public List<NoticeVo> queryTodayNotice() {
+		Connection conn  = JDBCUtils.getConnection();
+		PreparedStatement pre=null;
+		ResultSet res=null;
+		NoticeVo noticeVo=null;
+		List<NoticeVo> list=new ArrayList<NoticeVo>();
+		try {
+			pre=conn.prepareStatement("select * from notice where notice_releaseTime = ?");
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			pre.setString(1,sdf.format(date));
+			res=pre.executeQuery();
+			while(res.next()){
+				noticeVo =new NoticeVo();
+				noticeVo.setNotice_id(Integer.valueOf(res.getString("notice_id")));
+				noticeVo.setNotice_name(res.getString("notice_name"));
+				noticeVo.setNotice_releaseTime(res.getDate("notice_releaseTime"));
 				list.add(noticeVo);
 				noticeVo=null;
 			}

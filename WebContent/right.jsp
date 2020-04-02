@@ -33,7 +33,6 @@
 			out.print(str+"<br>");
 		}
 	%>
-</script>
 <body>
 <%@include file="doLogin.jsp"  %>
 <div class="right">

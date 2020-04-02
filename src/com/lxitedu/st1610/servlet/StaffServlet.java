@@ -211,33 +211,23 @@ public class StaffServlet extends HttpServlet {
 			
 			ArrayList<StaffVo> list=null;
 			if("num".equals(yiju)){
-				list=staffDaoImpl.queryStaff_num(Integer.parseInt(result));
-		 		
-		 		
+				list=staffDaoImpl.queryStaff_num(result);
 		 		request.setAttribute("lists", list);
 		 		request.getRequestDispatcher("staff_list.jsp").forward(request, response);
 			}else if("name".equals(yiju)){
 				list=staffDaoImpl.queryStaff_name(result);
-		 		
-		 		
 		 		request.setAttribute("lists", list);
 		 		request.getRequestDispatcher("staff_list.jsp").forward(request, response);
 			}else if("sex".equals(yiju)){
 				list=staffDaoImpl.queryStaff_sex(result);
-		 		
-		 		
 		 		request.setAttribute("lists", list);
 		 		request.getRequestDispatcher("staff_list.jsp").forward(request, response);
 			}else if("branch".equals(yiju)){
 				list=staffDaoImpl.queryStaff_branch(result);
-		 		
-		 		
 		 		request.setAttribute("lists", list);
 		 		request.getRequestDispatcher("staff_list.jsp").forward(request, response);
 			}else if("position".equals(yiju)){
 				list=staffDaoImpl.queryStaff_position(result);
-		 		
-		 		
 		 		request.setAttribute("lists", list);
 		 		request.getRequestDispatcher("staff_list.jsp").forward(request, response);
 			}	

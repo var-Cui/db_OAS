@@ -5,17 +5,19 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import com.lxitedu.st1610.dao.Impl.MaintainDaoImpl;
 import com.lxitedu.st1610.dao.Impl.ModelDaoImpl;
+import com.lxitedu.st1610.dao.Impl.NoticeDaoImpl;
 import com.lxitedu.st1610.vo.MaintainVo;
 import com.lxitedu.st1610.vo.ModelVo;
+import com.lxitedu.st1610.vo.NoticeVo;
 
 /**
  * Servlet implementation class MaintainServlet
@@ -157,7 +159,15 @@ public class MaintainServlet extends HttpServlet {
 			request.setAttribute("lists", lists);
 
 			request.getRequestDispatcher("left.jsp").forward(request, response);
-		}
+		}  else if("queryToday".equals(action)){
+			NoticeDaoImpl noticeDaoImpl = new NoticeDaoImpl();
+			List<NoticeVo> noticeList = noticeDaoImpl.queryTodayNotice();
+			if(noticeList.size() > 0) {
+				noticeList = noticeList.subList(0, 3);
+			}
+			request.setAttribute("noticeList", noticeList);
+	 		request.getRequestDispatcher("todayLook.jsp").forward(request, response);
+		} 
 	}
 
 }

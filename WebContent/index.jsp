@@ -35,7 +35,7 @@ background-repeat:no-repeat;
   <frame src="top.jsp" name="topFrame" scrolling="No" noresize="noresize" id="topFrame" title="topFrame" />
   <frameset rows="*" cols="180,*" framespacing="0" frameborder="no" border="0">
     <frame src="maintainServlet?action=sss" name="leftFrame" scrolling="yes" noresize="noresize" id="leftFrame" title="leftFrame" />
-    <frame src="right.jsp" name="mainFrame" id="mainFrame" title="mainFrame" />
+    <frame src="maintainServlet?action=queryToday" name="mainFrame" id="mainFrame" title="mainFrame" />
   </frameset>
 </frameset>
 <noframes>
