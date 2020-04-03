@@ -2,9 +2,9 @@ package com.lxitedu.st1610.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+
 import com.lxitedu.st1610.dao.Impl.RegisterImpl;
 import com.lxitedu.st1610.vo.RegisterVo;
 
@@ -47,6 +48,7 @@ public class RegisterServlet extends HttpServlet {
 	//	String time = request.getParameter("register_startTime");
 		Date register_startTime = null ;
 		Date register_endTime = null ;
+		Date date = new Date();
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			register_startTime = (Date) sdf.parse(request.getParameter("register_startTime"));
@@ -59,7 +61,7 @@ public class RegisterServlet extends HttpServlet {
 		String register_assentor=registerImpl.registerQuery_superior(register_branch);//获取他的上级姓名
 		String register_result="待审核";
 		RegisterVo registerVo = new RegisterVo(0,register_staffNum,register_name,register_branch,register_type,register_reason
-				,register_startTime,register_endTime, register_assentor,register_result,null,null);
+				,register_startTime,register_endTime, register_assentor,register_result,null,date);
 		//System.out.println(register_startTime+"====="+register_endTime);
 		registerImpl.registerAdd(registerVo);
 		//request.getSession().setAttribute("str", "提交成功");

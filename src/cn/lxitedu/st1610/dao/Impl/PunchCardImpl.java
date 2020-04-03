@@ -7,11 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.lxitedu.st1610.bean.PunchVo;
 import cn.lxitedu.st1610.dao.BaseDao;
 import cn.lxitedu.st1610.dao.PunchCardDao;
 import cn.lxitedu.st1610.util.JDBCUtils;
-import cn.lxitedu.st1610.bean.MaintainVo;
-import cn.lxitedu.st1610.bean.PunchVo;
 
 public class PunchCardImpl extends BaseDao implements PunchCardDao {
 	@Override
@@ -172,5 +171,67 @@ public class PunchCardImpl extends BaseDao implements PunchCardDao {
 			JDBCUtils.closeAll(con, pre, rs);
 		}
 		return str;	
+	}
+	
+	public int queryPunch(String type) {
+		Connection con = (Connection) JDBCUtils.getConnection();
+		String sql = "SELECT count(punch_id) from punch where punch_type = ?;";
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		int count = 0;
+		try {
+			pre = (PreparedStatement) con.prepareStatement(sql);
+			pre.setString(1,type);
+			rs = pre.executeQuery();
+			rs.next();
+			count = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtils.closeAll(con, pre, rs);
+		}
+		return count;	
+	}
+	
+	public int queryPunch(String type,String startDate,String endDate) {
+		Connection con = (Connection) JDBCUtils.getConnection();
+		String sql = "SELECT count(punch_id) from punch where punch_type = ? and punch_time >= ? and punch_time <= ?;";
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		int count = 0;
+		try {
+			pre = (PreparedStatement) con.prepareStatement(sql);
+			pre.setString(1,type);
+			pre.setString(2,startDate);
+			pre.setString(3,endDate);
+			rs = pre.executeQuery();
+			rs.next();
+			count = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtils.closeAll(con, pre, rs);
+		}
+		return count;	
+	}
+	
+	public int queryPunchResult(String type) {
+		Connection con = (Connection) JDBCUtils.getConnection();
+		String sql = "SELECT count(punch_id) from punch where punch_result = ?;";
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		int count = 0;
+		try {
+			pre = (PreparedStatement) con.prepareStatement(sql);
+			pre.setString(1,type);
+			rs = pre.executeQuery();
+			rs.next();
+			count = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtils.closeAll(con, pre, rs);
+		}
+		return count;	
 	}
 }

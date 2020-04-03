@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import com.lxitedu.st1610.dao.RegisterDao;
 import com.lxitedu.st1610.util.JDBCUtils;
 import com.lxitedu.st1610.vo.PunchVo;
@@ -17,10 +16,9 @@ public  class RegisterImpl extends JDBCUtils implements RegisterDao{
 	
 	@Override
 	public void registerAdd(Object obj) {
-		// TODO Auto-generated method stub
 		RegisterVo registerVo = (RegisterVo)obj;
 		Connection con = (Connection) JDBCUtils.getConnection();
-		String sql = "insert into register(register_staffNum,register_name,register_branch,register_type,register_reason,register_startTime,register_endTime,register_assentor,register_result)  values(?,?,?,?,?,?,?,?,?);";
+		String sql = "insert into register(register_staffNum,register_name,register_branch,register_type,register_reason,register_startTime,register_endTime,register_assentor,register_result,register_releaseTime)  values(?,?,?,?,?,?,?,?,?,?);";
 		PreparedStatement pre = null;
 		ResultSet rs = null;
 	
@@ -35,9 +33,9 @@ public  class RegisterImpl extends JDBCUtils implements RegisterDao{
 			pre.setObject(7, registerVo.getRegister_endTime());
 			pre.setString(8, registerVo.getRegister_assentor());
 			pre.setString(9, registerVo.getRegister_result());
+			pre.setObject(10, registerVo.getRegister_releaseTime());
 			pre.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCUtils.closeAll(con, pre, rs);
@@ -46,19 +44,16 @@ public  class RegisterImpl extends JDBCUtils implements RegisterDao{
 
 	@Override
 	public void registerDelete(Object obj) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void registerUpdate(Object obj) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void registerQuery(Object obj) {
-		// TODO Auto-generated method stub
 		
 	}
 	
@@ -86,7 +81,6 @@ public  class RegisterImpl extends JDBCUtils implements RegisterDao{
 				registerVo.setRegister_releaseTime(rs.getTimestamp(12));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCUtils.closeAll(con, pre, rs);
@@ -110,7 +104,6 @@ public  class RegisterImpl extends JDBCUtils implements RegisterDao{
 				name = rs.getString(1);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCUtils.closeAll(con, pre, rs);
@@ -140,7 +133,6 @@ public  class RegisterImpl extends JDBCUtils implements RegisterDao{
 				punchVoList.add(punchVo);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCUtils.closeAll(con, pre, rs);
@@ -174,7 +166,6 @@ public  class RegisterImpl extends JDBCUtils implements RegisterDao{
 				RegisterVoList.add(registerVo);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCUtils.closeAll(con, pre, rs);
@@ -209,7 +200,6 @@ public  class RegisterImpl extends JDBCUtils implements RegisterDao{
 				RegisterVoList.add(registerVo);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCUtils.closeAll(con, pre, rs);
@@ -226,12 +216,51 @@ public  class RegisterImpl extends JDBCUtils implements RegisterDao{
 			pre.setInt(1,register_id);
 			pre.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCUtils.closeAll(con, pre, rs);
 		}
 	}
 	
-
+	public int queryNum(String type) {
+		Connection con = (Connection) JDBCUtils.getConnection();
+		String sql = "SELECT count(register_id) from register where register_type = ?;";
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		int count = 0;
+		try {
+			pre = (PreparedStatement) con.prepareStatement(sql);
+			pre.setString(1,type);
+			rs = pre.executeQuery();
+			rs.next();
+			count = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtils.closeAll(con, pre, rs);
+		}
+		return count;	
+	}
+	
+	public int queryNum(String type,String startDate,String endDate) {
+		Connection con = (Connection) JDBCUtils.getConnection();
+		String sql = "SELECT count(register_id) from register where register_type = ? and register_releaseTime >= ? and register_releaseTime <= ?;";
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		int count = 0;
+		try {
+			pre = (PreparedStatement) con.prepareStatement(sql);
+			pre.setString(1,type);
+			pre.setString(2,startDate);
+			pre.setString(3,endDate);
+			rs = pre.executeQuery();
+			rs.next();
+			count = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtils.closeAll(con, pre, rs);
+		}
+		return count;	
+	}
 }

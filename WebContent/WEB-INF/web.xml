@@ -218,4 +218,23 @@
     <servlet-name>DownServlet</servlet-name>
     <url-pattern>/DownServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ChartServlet</display-name>
+    <servlet-name>ChartServlet</servlet-name>
+    <servlet-class>com.lxitedu.st1610.servlet.ChartServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ChartServlet</servlet-name>
+    <url-pattern>/ChartServlet</url-pattern>
+  </servlet-mapping>
+  <!-- jfreechart配置 -->  
+    <servlet>  
+        <servlet-name>DisplayChart</servlet-name>  
+        <servlet-class>org.jfree.chart.servlet.DisplayChart</servlet-class>  
+    </servlet>  
+    <servlet-mapping>  
+        <servlet-name>DisplayChart</servlet-name>  
+        <url-pattern>/chart</url-pattern>  
+	</servlet-mapping> 
 </web-app>

@@ -162,8 +162,13 @@ public class MaintainServlet extends HttpServlet {
 		}  else if("queryToday".equals(action)){
 			NoticeDaoImpl noticeDaoImpl = new NoticeDaoImpl();
 			List<NoticeVo> noticeList = noticeDaoImpl.queryTodayNotice();
-			if(noticeList.size() > 0) {
-				noticeList = noticeList.subList(0, 3);
+			if(noticeList.size() != 0) {
+				if(noticeList.size() >= 3) {
+					noticeList = noticeList.subList(0, 3);
+				} else {
+					noticeList = noticeList.subList(0,noticeList.size());
+				}
+				
 			}
 			request.setAttribute("noticeList", noticeList);
 	 		request.getRequestDispatcher("todayLook.jsp").forward(request, response);
