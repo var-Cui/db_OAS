@@ -6,6 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="css/style1.css" rel="stylesheet">
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
 <title>Insert title here</title>
 </head>
 <script language="javascript">
@@ -24,6 +25,14 @@ function check(form){
 	form.submit();
 }
 
+	function toPage(num){
+		var param = "staffServlet?action=sss&currPageNo="+num;
+		var key = $("#key").val();
+		if((key != "") && (key != null)){
+			param += "&f=" + $("#f").val() + "&key=" + key;
+		}
+		window.location.href=param;
+	}
 </script>
 <%@include file="doLogin.jsp"  %>
 <body>
@@ -53,13 +62,13 @@ function check(form){
 &nbsp;<img src="image/search1.gif" width="45" height="28"></td>
     <td bgcolor="#F9D16B">请选择查询依据：
       <select name="f" class="wenbenkuang" id="f">
-        <option value="num">编号</option>
-        <option value="name">姓名</option>
-        <option value="sex" >性别</option>
-        <option value="branch">部门</option>
-        <option value="position" selected>职位</option>
+        <option value="num" <c:if test="${yiju == 'num'}">selected=selected</c:if>>编号</option>
+        <option value="name" <c:if test="${yiju == 'name'}">selected=selected</c:if>>姓名</option>
+        <option value="sex" <c:if test="${yiju == 'sex'}">selected=selected</c:if>>性别</option>
+        <option value="branch" <c:if test="${yiju == 'branch'}">selected=selected</c:if>>部门</option>
+        <option value="position" <c:if test="${yiju == 'position'}">selected=selected</c:if>>职位</option>
         </select>
-      <input name="key" type="text" id="key" size="50">
+      <input name="key" type="text" id="key" size="50" value="${result}">
       <input name="Submit" type="submit" class="btn_grey" value="查询"></td>
   </tr>
 </table>
@@ -76,7 +85,6 @@ function check(form){
     <c:if test="${sessionScope.staffVo.staff_position ne '普通员工'}"><td width="5%" align="center" bgcolor="#F9D16B">修改</td></c:if>
     <c:if test="${sessionScope.staffVo.staff_position ne '普通员工'}"><td width="5%" align="center" bgcolor="#F9D16B">删除</td></c:if>
   </tr>
-
    <c:forEach items="${list}" var="result"> <!-- 标签  -->
  		<tr>
 		    <td align="center" style="padding:5px;">${result.staff_num }</td>
@@ -89,25 +97,9 @@ function check(form){
 		<c:if test="${sessionScope.staffVo.staff_position ne '普通员工'}">  <td align="center"><a href="staffServlet?action=queryInfo&user_id=${result.staff_id}">修改</a></td></c:if> 
 		<c:if test="${sessionScope.staffVo.staff_position ne '普通员工'}">    <td align="center"><a href="staffServlet?action=delete&staff_id=${result.staff_id}">删除</a></td></c:if>
  		 </tr>
- </c:forEach>
- 
- 
-		 
- <c:forEach items="${lists }"  var="res"> <!-- 标签  -->
- 		<tr>
-		    <td style="padding:5px;">${res.staff_num }</td>
-		    <td style="padding:5px;">${res.staff_name }</td>
-		    <td style="padding:5px;">${res.staff_sex}</td>
-		    <td style="padding:5px;">${res.staff_birthdate }</td>
-		    <td style="padding:7px;">${res.staff_branch }</td>
-		    <td style="padding:5px;">${res.staff_position }</td>
-		    <td style="padding:7px;">${res.staff_enterTime }</td>
-		<c:if test="${sessionScope.staffVo.staff_position ne '普通员工'}">  <td align="center"><a href="staffServlet?action=queryInfo&user_id=${result.staff_id}">修改</a></td></c:if> 
-		<c:if test="${sessionScope.staffVo.staff_position ne '普通员工'}">    <td align="center"><a href="staffServlet?action=delete&staff_id=${result.staff_id}">删除</a></td></c:if>
- 		 </tr>
- </c:forEach>
- <td align="center" colspan="7">
- 
+ 	</c:forEach>
+		 <tr>
+ 	<td align="center" colspan="7">
     	 	<%--
     	 	需求： 
     	 		1） 如果当前页是首页，那么不能点击“首页”和“上一页”，否则可以点击
@@ -119,38 +111,40 @@ function check(form){
     	 	 		上一页
     	 	 	</c:when>
     	 	 	<c:otherwise>
-    	 	 		<a href="limitServlet?action=staffVo&currPageNo=${1}">首页</a> &nbsp;
-    	 			<a href="limitServlet?action=staffVo&currPageNo=${VO.currPageNo-1 }">上一页</a> &nbsp;
+    	 	 		<a href="javascript:void(0)" onclick="toPage(1)">首页</a>&nbsp;
+    	 	 		<a href="javascript:void(0)" onclick="toPage(${VO.currPageNo-1})">上一页</a>&nbsp;
     	 	 	</c:otherwise>
     	 	 </c:choose>
-    	 	 
     	 	 <c:choose>
     	 	 	<c:when test="${VO.currPageNo==VO.totalPageCount}">
     	 	 		下一页&nbsp;
     	 	 		末页
     	 	 	</c:when>
     	 	 	<c:otherwise>
-    	 	 		<a href="limitServlet?action=staffVo&currPageNo=${VO.currPageNo+1 }">下一页</a>&nbsp;
-    	 			<a href="limitServlet?action=staffVo&currPageNo=${VO.totalPageCount}">末页</a>&nbsp;
+    	 	 		<a href="javascript:void(0)" onclick="toPage(${VO.currPageNo+1 })">下一页</a>&nbsp;
+    	 	 		<a href="javascript:void(0)" onclick="toPage(${VO.totalPageCount })">末页</a>&nbsp;
     	 	 	</c:otherwise>
     	 	 </c:choose>
     	 		当前为第${VO.currPageNo}页/共${VO.totalPageCount}页&nbsp;
     	 		共${VO.totalCount}条数据&nbsp;
-    	 		每页显示 <input type="text" size="2" id="pageSize" value="${VO.pageSize}" onblur="changePageSize()"/> 条&nbsp;
-    	 		请输入跳转的页面<form action="limitServlet?action=staffVo" name="from" method="post">
-                 <input type="text" size="6" name="currPageNo" width="2px" />  
+    	 		每页显示5条&nbsp;
+    	 	</td>
+    	 	</tr>
+    	 	<tr>
+    	 	<td  align="center" colspan="7">
+    	 		 <%-- <input type="text" size="2" id="pageSize" value="${VO.pageSize}" onblur="changePageSize()"/>  --%>
+    	 		请输入跳转的页面
+    	 		<form action="staffServlet?action=sss" name="from" method="post">
+                  <input type="text" size="6" name="currPageNo" width="2px" />  
                   <input type="button" onclick="check(form)"  value="提交"/>
                   <input type="hidden" value="${VO.totalPageCount }" name="all" />
                  </form>		
     	 	</td>
-
+    	 	</tr>
       </table>
-      
-       
           </td>
       </tr>
     </table>
-    
     </td>
   </tr>
 </table>

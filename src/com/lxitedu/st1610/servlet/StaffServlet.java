@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.lxitedu.st1610.dao.Impl.StaffDaoImpl;
+import com.lxitedu.st1610.vo.PageVo;
 import com.lxitedu.st1610.vo.StaffVo;
 
 
@@ -32,7 +33,6 @@ public class StaffServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doPost(request, response);
 	}
 
@@ -40,7 +40,6 @@ public class StaffServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String action=request.getParameter("action");//获取操作符
 		request.setAttribute("a", "普通员工");
 		request.setAttribute("b", "部长");
@@ -51,7 +50,6 @@ public class StaffServlet extends HttpServlet {
 			int staff_num = Integer.parseInt(request.getParameter("staff_num"));
 			String staff_name=request.getParameter("staff_name");
 			String staff_sex=request.getParameter("staff_sex");
-			
 			String staff_birthdate=request.getParameter("staff_birthdate");
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 			Date time=null;
@@ -59,7 +57,6 @@ public class StaffServlet extends HttpServlet {
 				 time=(Date)sdf.parse(staff_birthdate);
 				 System.out.println();
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -73,7 +70,6 @@ public class StaffServlet extends HttpServlet {
 				 time1=(Date)sdf1.parse(staff_enterTime);
 				 System.out.println();
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			String staff_password=request.getParameter("staff_pwd");
@@ -88,24 +84,19 @@ public class StaffServlet extends HttpServlet {
 			staffVo.setStaff_position(staff_position);
 			staffVo.setStaff_enterTime(time1);
 			staffVo.setStaff_password(staff_password);
-			
 			StaffDaoImpl staffDaoImpl=new StaffDaoImpl();
 			staffDaoImpl.insertStaff(staffVo);
-			
 			System.out.println("增加员工成功！！！");
 			 response.sendRedirect("limitServlet?action=staffVo");
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 		
 		}else if("delete".equals(action)){
 			System.out.println("员工删除>>>>");
 			int id = Integer.parseInt(request.getParameter("staff_id"));
 			System.out.println("id="+id);
-			
 			StaffDaoImpl staffDaoImpl=new StaffDaoImpl();
 			staffDaoImpl.deleteStaff(id);;
-			
 			System.out.println("\n删除员工成功！！！");
 			response.sendRedirect("limitServlet?action=staffVo");
 			
@@ -115,33 +106,26 @@ public class StaffServlet extends HttpServlet {
 			int staff_num = Integer.parseInt(request.getParameter("staff_num"));
 			String staff_name=request.getParameter("staff_name");
 			String staff_sex=request.getParameter("staff_sex");
-			
 			String staff_birthdate=request.getParameter("staff_birthdate");
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 			Date time=null;
 			try {
 				 time=(Date)sdf.parse(staff_birthdate);
-				 System.out.println();
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 			String staff_branch=request.getParameter("staff_branch");
 			String staff_position=request.getParameter("staff_position");
 			String staff_enterTime=request.getParameter("staff_enterTime");
-			
 			SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 			Date time1=null;
 			try {
 				 time1=(Date)sdf1.parse(staff_enterTime);
 				 System.out.println();
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			System.out.println("拿到的值："+staff_num+"\t性别："+staff_sex+"\t名字："+staff_name+"\t生日："+time+"\t部门："+staff_branch+"\t职位:"+staff_position);
-		try {
 			StaffVo staffVo=new StaffVo();
 			staffVo.setStaff_num(staff_num);
 			staffVo.setStaff_name(staff_name);
@@ -151,23 +135,15 @@ public class StaffServlet extends HttpServlet {
 			staffVo.setStaff_position(staff_position);
 			staffVo.setStaff_enterTime(time1);
 			staffVo.setStaff_id(staff_id);
-			
 			StaffDaoImpl staffDaoImpl=new StaffDaoImpl();
 			staffDaoImpl.updateStaff(staffVo);;
-			
 			System.out.println("修改员工成功！！！");
 			 response.sendRedirect("limitServlet?action=staffVo");
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-			
-			
 		}else if("query".equals(action)){
 			System.out.println("进入员工查询》》》");
 			StaffDaoImpl staffDaoImpl=new StaffDaoImpl();
 			ArrayList<StaffVo> list=staffDaoImpl.queryStaff();
 	 		request.setAttribute("list", list);
-	 		
 	 		request.getRequestDispatcher("staff_list.jsp").forward(request, response);
 		}else if("queryInfo".equals(action)){
 			int id=Integer.parseInt(request.getParameter("user_id"));
@@ -175,7 +151,6 @@ public class StaffServlet extends HttpServlet {
 			StaffDaoImpl staffDaoImpl=new StaffDaoImpl();
 			StaffVo staffVo=staffDaoImpl.queryStaffName(id);
 			request.setAttribute("result", staffVo);
-			
 			request.getRequestDispatcher("branchServlet?action=staffUpdate").forward(request, response);
 		}else if("queryPersonInfo".equals(action)){
 			int id=Integer.parseInt(request.getParameter("user_id"));
@@ -193,44 +168,52 @@ public class StaffServlet extends HttpServlet {
 				StaffVo staffVo=new StaffVo();
 				staffVo.setStaff_num(staff_num);
 				staffVo.setStaff_password(staff_password);
-				
 				StaffDaoImpl staffVoImpl=new StaffDaoImpl();
 				staffVoImpl.updateStaffPwd(staffVo);
 				//request.getSession().invalidate();//让session失效，跳转到登录界面！
 				out.print("<script>alert('修改成功，请重新登录！');location='logout.jsp';</script>");
-				
 			} catch (Exception e) {
-				// TODO: handle exception
 			}
 		}else if("sss".equals(action)){
+			String currPageNo= request.getParameter("currPageNo");
 			System.out.println("按条件查询》》》");
 			String yiju=request.getParameter("f");//获取依据值
 			String result=request.getParameter("key");
 			System.out.println("f"+yiju+".."+result);
 			StaffDaoImpl staffDaoImpl=new StaffDaoImpl();
-			
 			ArrayList<StaffVo> list=null;
+			PageVo p = new PageVo();
+			int no=0;
+		    if(null==currPageNo) {
+			   no=1;
+		    } else{
+			   no= Integer.parseInt(currPageNo);
+		    }
+		    p.setCurrPageNo(no);
 			if("num".equals(yiju)){
-				list=staffDaoImpl.queryStaff_num(result);
-		 		request.setAttribute("lists", list);
-		 		request.getRequestDispatcher("staff_list.jsp").forward(request, response);
-			}else if("name".equals(yiju)){
-				list=staffDaoImpl.queryStaff_name(result);
-		 		request.setAttribute("lists", list);
-		 		request.getRequestDispatcher("staff_list.jsp").forward(request, response);
-			}else if("sex".equals(yiju)){
-				list=staffDaoImpl.queryStaff_sex(result);
-		 		request.setAttribute("lists", list);
-		 		request.getRequestDispatcher("staff_list.jsp").forward(request, response);
-			}else if("branch".equals(yiju)){
-				list=staffDaoImpl.queryStaff_branch(result);
-		 		request.setAttribute("lists", list);
-		 		request.getRequestDispatcher("staff_list.jsp").forward(request, response);
-			}else if("position".equals(yiju)){
-				list=staffDaoImpl.queryStaff_position(result);
-		 		request.setAttribute("lists", list);
-		 		request.getRequestDispatcher("staff_list.jsp").forward(request, response);
-			}	
+				p.setTotalCount(staffDaoImpl.queryStaff_num_count(result));
+				list=staffDaoImpl.queryStaff_num(result,no,p.getPageSize());
+			} else if("name".equals(yiju)){
+				p.setTotalCount(staffDaoImpl.queryStaff_name_count(result));
+				list=staffDaoImpl.queryStaff_name(result,no,p.getPageSize());
+			} else if("sex".equals(yiju)){
+				p.setTotalCount(staffDaoImpl.queryStaff_sex_count(result));
+				list=staffDaoImpl.queryStaff_sex(result,no,p.getPageSize());
+			} else if("branch".equals(yiju)){
+				p.setTotalCount(staffDaoImpl.queryStaff_branch_count(result));
+				list=staffDaoImpl.queryStaff_branch(result,no,p.getPageSize());
+			} else if("position".equals(yiju)){
+				p.setTotalCount(staffDaoImpl.queryStaff_position_count(result));
+				list=staffDaoImpl.queryStaff_position(result,no,p.getPageSize());
+			} else {
+			    p.setTotalCount(staffDaoImpl.getPageCount());
+			    list = staffDaoImpl.getList(no,p.getPageSize());
+			}
+			request.setAttribute("VO", p);
+			request.setAttribute("list",list);
+			request.setAttribute("yiju",yiju);
+			request.setAttribute("result",result);
+	 		request.getRequestDispatcher("staff_list.jsp").forward(request, response);
 		}else if("doLogin".equals(action)){
 			System.out.println("登录判断》》》》");
 			int yzm=Integer.parseInt((String)request.getSession().getAttribute("rand"));//随机验证码
@@ -241,7 +224,7 @@ public class StaffServlet extends HttpServlet {
 			Connection conn = null;
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
-		//获取提交的表单元素的值，根据表单的name
+			//获取提交的表单元素的值，根据表单的name
 			int staff_num=Integer.parseInt(request.getParameter("user_name"));
 			String staff_password=request.getParameter("password");
 			System.out.println(staff_num+":::"+staff_password);
@@ -250,8 +233,6 @@ public class StaffServlet extends HttpServlet {
 				//编写登录功能
 				Class.forName("com.mysql.jdbc.Driver");
 				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_oa", "root", ""); 
-				
-
 				String sql = "select count(1) from staff where staff_num=? and staff_password=?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, staff_num);
@@ -259,14 +240,12 @@ public class StaffServlet extends HttpServlet {
 				rs = pstmt.executeQuery();
 				if (rs.next()) {
 					int count = rs.getInt(1);
-
 					if (count > 0) {
 						System.out.println("登录成功！");
 						StaffDaoImpl staffDaoImpl=new StaffDaoImpl();
 						StaffVo staffVo=staffDaoImpl.queryStaffVo(staff_num); 
 						request.getSession().setAttribute("staffVo", staffVo);
 						request.getRequestDispatcher("index.jsp").forward(request, response); //跳转一下
-						
 					} else {
 						System.out.println("登录失败！");
 						out.print("<script>alert('登录失败,账号或密码有误！');location='login.jsp';</script>");
@@ -281,25 +260,21 @@ public class StaffServlet extends HttpServlet {
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				if (pstmt != null)
 					try {
 						pstmt.close();
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				if (conn != null)
 					try {
 						conn.close();
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
-			
 			}else {
 				out.print("<script>alert('登录失败,验证码输入有误！');location='login.jsp';</script>");
 				out.close();
@@ -309,7 +284,6 @@ public class StaffServlet extends HttpServlet {
 			StaffDaoImpl staffDaoImpl=new StaffDaoImpl();
 			ArrayList<StaffVo> list=staffDaoImpl.queryStaff();
 	 		request.setAttribute("list", list);
-	 		
 	 		request.getRequestDispatcher("branch_add.jsp").forward(request, response);
 		}
 	}
