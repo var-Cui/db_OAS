@@ -18,6 +18,7 @@ import com.lxitedu.st1610.dao.Impl.NoticeDaoImpl;
 import com.lxitedu.st1610.vo.MaintainVo;
 import com.lxitedu.st1610.vo.ModelVo;
 import com.lxitedu.st1610.vo.NoticeVo;
+import com.lxitedu.st1610.vo.StaffVo;
 
 /**
  * Servlet implementation class MaintainServlet
@@ -168,9 +169,14 @@ public class MaintainServlet extends HttpServlet {
 				} else {
 					noticeList = noticeList.subList(0,noticeList.size());
 				}
-				
 			}
 			request.setAttribute("noticeList", noticeList);
+			//第二个框
+			StaffVo staffVo = (StaffVo) request.getSession().getAttribute("staffVo");//登录属性对象
+			MaintainDaoImpl maintainDaoImpl = new MaintainDaoImpl();
+			List<MaintainVo> list = maintainDaoImpl.getList(staffVo.getStaff_name());
+			request.setAttribute("auditList", list);
+			//第三个框
 	 		request.getRequestDispatcher("todayLook.jsp").forward(request, response);
 		} 
 	}

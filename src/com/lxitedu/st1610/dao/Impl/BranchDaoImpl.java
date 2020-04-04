@@ -15,11 +15,8 @@ public class BranchDaoImpl implements BranchDao{
 
 	@Override
 	public void insertBranch(BranchVo branchVo) {
-		// TODO Auto-generated method stub
 		Connection conn  = JDBCUtils.getConnection();
-
 		java.sql.Date sqlDate=new java.sql.Date(branchVo.getBranch_time().getTime());
-		
 		String sql="insert into branch(branch_name,branch_minister,branch_summarize,branch_time) values(?,?,?,?)";
 		PreparedStatement  pstate =null;
 		try {
@@ -28,10 +25,8 @@ public class BranchDaoImpl implements BranchDao{
 			pstate.setString(2, branchVo.getBranch_minister());
 			pstate.setString(3, branchVo.getBranch_summarize());
 			pstate.setDate(4, sqlDate);
-			
 			pstate.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			JDBCUtils.closeAll(conn, pstate, null);
@@ -40,18 +35,14 @@ public class BranchDaoImpl implements BranchDao{
 
 	@Override
 	public void deleteBranch(int id) {
-		// TODO Auto-generated method stub
 		Connection conn  = JDBCUtils.getConnection();
-		
 		String sql = "delete from branch where branch_id=?";
 		PreparedStatement  pstate =null;
 		try {
 			pstate =conn.prepareStatement(sql);
 			pstate.setInt(1, id);
-			
 			pstate.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			JDBCUtils.closeAll(conn, pstate, null);
@@ -60,7 +51,6 @@ public class BranchDaoImpl implements BranchDao{
 
 	@Override
 	public ArrayList<BranchVo> queryBranch() {
-		// TODO Auto-generated method stub
 		Connection conn  = JDBCUtils.getConnection();
 		PreparedStatement pre=null;
 		ResultSet res=null;
@@ -80,7 +70,6 @@ public class BranchDaoImpl implements BranchDao{
 				branchVo=null;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			JDBCUtils.closeAll(conn, pre, res);
@@ -90,7 +79,6 @@ public class BranchDaoImpl implements BranchDao{
 
 	@Override
 	public void updateBranch(BranchVo branchVo) {
-		// TODO Auto-generated method stub
 		Connection conn  = JDBCUtils.getConnection()             ;
 		java.sql.Date sqlDate=new java.sql.Date(branchVo.getBranch_time().getTime());
 		
@@ -107,7 +95,6 @@ public class BranchDaoImpl implements BranchDao{
 			    pstate.executeUpdate();
 			  
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			JDBCUtils.closeAll(conn, pstate, null);
@@ -117,7 +104,6 @@ public class BranchDaoImpl implements BranchDao{
 
 	@Override
 	public BranchVo queryBranchName(String name) {
-		// TODO Auto-generated method stub
 		Connection conn  = JDBCUtils.getConnection();
 		String sql = "select branch_id, branch_name,branch_minister,branch_summarize,branch_time from branch where branch_name=?";
 		PreparedStatement  pstate =null;
@@ -134,10 +120,30 @@ public class BranchDaoImpl implements BranchDao{
 				branchVo.setBranch_time(res.getDate("branch_time"));
 			}
 		}catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return branchVo;	
+	}
+
+	@Override
+	public String queryBranchMinister(String name) {
+		Connection con = (Connection) JDBCUtils.getConnection();
+		String sql = "SELECT  branch_minister FROM BRANCH WHERE branch_name = ?;";
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		String branch = "";
+		try {
+			pre = (PreparedStatement) con.prepareStatement(sql);
+			pre.setString(1,name);
+			rs = pre.executeQuery();
+			rs.next();
+			branch = rs.getString(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtils.closeAll(con, pre, rs);
+		}
+		return branch;
 	}
 
 }

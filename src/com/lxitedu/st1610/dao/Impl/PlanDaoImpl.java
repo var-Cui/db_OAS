@@ -51,7 +51,7 @@ public class PlanDaoImpl implements PlanDao {
 		PreparedStatement pre=null;
 		ResultSet res=null;
 		try {
-			pre=conn.prepareStatement("insert into plan(plan_name,plan_content,plan_type,plan_result,plan_promulgator,plan_promulgatorNum,plan_branch,plan_foundTime) values(?,?,?,?,?,?,?,sysdate());");
+			pre=conn.prepareStatement("insert into plan(plan_name,plan_content,plan_type,plan_result,plan_promulgator,plan_promulgatorNum,plan_branch,plan_foundTime,plan_assentor) values(?,?,?,?,?,?,?,sysdate(),?);");
 			pre.setString(1,planVo.getPlan_name());
 			pre.setString(2,planVo.getPlan_content());
 			pre.setString(3,planVo.getPlan_type());
@@ -59,6 +59,7 @@ public class PlanDaoImpl implements PlanDao {
 			pre.setString(5,planVo.getPlan_promulgator());
 			pre.setInt(6,planVo.getPlan_promulgatorNum());
 			pre.setString(7,planVo.getPlan_branch());
+			pre.setString(8,planVo.getPlan_assentor());
 			pre.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

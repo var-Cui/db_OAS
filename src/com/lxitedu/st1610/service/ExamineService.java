@@ -5,5 +5,5 @@ import java.util.ArrayList;
 import com.lxitedu.st1610.vo.PageVo;
 
 public interface ExamineService {
-	public ArrayList examinePlanQuery(PageVo p,String currPageNo,String examineType,String name);
+	public ArrayList examinePlanQuery(PageVo p,String currPageNo,String examineType,String branch,String name);
 }

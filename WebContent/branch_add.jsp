@@ -54,7 +54,7 @@ $(function(){
 
 <table width="517" height="82%" border="0" cellpadding="0" cellspacing="1" bgcolor="#0077B2">
         <tr>
-          <td height="22" colspan="2" background="../image/beijing.gif" bgcolor="#FFFFFF"><span class="STYLE6">&nbsp;&nbsp;用户添加</span></td>
+          <td height="22" colspan="2" background="image/beijing.gif" bgcolor="#FFFFFF"><span class="STYLE6">&nbsp;&nbsp;部门添加</span></td>
         </tr>
         <tr>
           <td height="25" align="center" valign="middle" bgcolor="#FFFFFF">部门</td>

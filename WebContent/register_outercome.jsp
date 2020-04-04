@@ -67,10 +67,10 @@ function checkForm(form){
 
 <table width="517" height="82%" border="0" cellpadding="0" cellspacing="1" bgcolor="#0077B2">
         <tr>
-          <td height="22" colspan="2" background="../image/beijing.gif" bgcolor="#FFFFFF"><span class="STYLE6">&nbsp;&nbsp;外出记录：</span></td>
+          <td height="22" colspan="2" background="image/beijing.gif" bgcolor="#FFFFFF"><span class="STYLE6">&nbsp;&nbsp;外出记录：</span></td>
         </tr>
         <tr>
-       <input name="type" type="hidden"   value="register_outercome" />
+           <input name="type" type="hidden"   value="register_outercome" />
           <td height="25" align="center" valign="middle" bgcolor="#FFFFFF">员工编码：</td>
           <td height="25" align="left" valign="middle" bgcolor="#FFFFFF">
             &nbsp;<input name="register_staffNum" type="text"  value=${staffVo.staff_num}  style="border:0px;"></td>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <LINK href="YHChannelApply.files/Style.css" type=text/css rel=stylesheet><LINK href="YHChannelApply.files/Manage.css" type=text/css rel=stylesheet>
@@ -57,13 +58,14 @@ function __doPostBack(eventTarget, eventArgument) {
               <TR>
                 <TD>筛选数据：</TD>
                 <TD>
-                	<input type="radio" name="examineType" value="1">会议
-                    <input type="radio" name="examineType" value="2">公告
-                    <input type="radio" name="examineType" value="3">请假
-                    <input type="radio" name="examineType" value="4">出差
-                    <input type="radio" name="examineType" value="5">外出
-                    <input type="radio" name="examineType" value="6" checked>企业
-                    <input type="radio" name="examineType" value="7">部门
+                	<input type="radio" name="examineType" value="1" <c:if test="${pd == '1'}">checked</c:if>>会议
+                    <input type="radio" name="examineType" value="2" <c:if test="${pd == '2'}">checked</c:if>>公告
+                    <input type="radio" name="examineType" value="3" <c:if test="${pd == '3'}">checked</c:if>>请假
+                    <input type="radio" name="examineType" value="4" <c:if test="${pd == '4'}">checked</c:if>>出差
+                    <input type="radio" name="examineType" value="5" <c:if test="${pd == '5'}">checked</c:if>>外出
+                    <input type="radio" name="examineType" value="8" <c:if test="${pd == '8'}">checked</c:if>>个人
+                    <!-- <input type="radio" name="examineType" value="6" >个人 -->
+                    <!-- <input type="radio" name="examineType" value="7" >部门 -->
                 </TD>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>          
                 <TD><INPUT type="submit" value="筛选 " name="saixuan"></TD></TR></TBODY></TABLE>
@@ -78,33 +80,81 @@ function __doPostBack(eventTarget, eventArgument) {
               <TBODY>
               <TR 
               style="FONT-WEIGHT: bold; FONT-STYLE: normal; BACKGROUND-COLOR: #eeeeee; TEXT-DECORATION: none">
-                <TD>申请者</TD>
-                <TD>所属部门</TD>
-                <TD>申请类型</TD>
-                <TD>申请标题</TD>
-                <TD>申请时间</TD>
-                <TD>详细</TD>
-                <TD>领导建议</TD>
-                <TD>同意</TD>
-                <TD>拒绝</TD>               
+                <TD align="center">申请者</TD>
+                <TD align="center">所属部门</TD>
+                <TD align="center">申请类型</TD>
+                <TD align="center">申请标题</TD>
+                <TD align="center">申请时间</TD>
+                <TD align="center">详细</TD>
+                <TD align="center">领导建议</TD>
+                <TD align="center">同意</TD>
+                <TD align="center">拒绝</TD>               
                 </TR>
+                <form action="examineServlet?action=meetingExamineRe" method=post>    
+                <c:if test="${(pd eq '1') }">
+                <c:forEach items="${list }" var="v">
+                <input type="hidden" name="meet_id" value="${v.meeting_id}">
+              <TR style="FONT-WEIGHT: normal; FONT-ST  YLE: normal; BACKGROUND-COLOR: white; TEXT-DECORATION: none">
+                <TD  align="center">${v.meeting_promulgator }</TD>
+                <TD align="center">
+                <c:forEach items="${branchList}" var="t">
+	        		<c:if test = "${v.branch_id == t.branch_id}">${t.branch_name}</c:if>
+	        	</c:forEach>
+                </TD>
+                <TD align="center">会议</TD>
+                <TD align="center">${v.meeting_name }</TD>
+                <TD align="center">${v.meeting_releaseTime }</TD>
+                <TD align="center"><A href="planServlet?action=planQuery&plan_id=${v.meeting_id}">查看</A> </TD>
+                <TD align="center"><INPUT class="text" name="note" size="20" value=""></TD>
+                <TD align="center">
+	                <INPUT type="submit" value="同意" name="status">
+	            </TD>
+	            <TD align="center">
+	                <INPUT type="submit" value="拒绝" name="status"> 
+	            </TD>	            	            
+                  </TR>
+                  </c:forEach>
+                  </c:if>
+                  </form>
+                  <form action="examineServlet?action=noticeExamineRe" method=post>    
+                <c:if test="${(pd eq '2') }">
+                <c:forEach items="${list }" var="v">
+                <input type="hidden" name="notice_id" value="${v.notice_id}">
+              <TR style="FONT-WEIGHT: normal; FONT-ST  YLE: normal; BACKGROUND-COLOR: white; TEXT-DECORATION: none">
+                <TD align="center">${v.notice_promulgator }</TD>
+                <TD align="center">${v.notice_promulgator }</TD>
+                <TD align="center">公告</TD>
+                <TD align="center">${v.notice_name }</TD>
+                <TD align="center">${v.notice_releaseTime }</TD>
+                <TD align="center"><A href="planServlet?action=planQuery&plan_id=${v.notice_id}">查看</A> </TD>
+                <TD align="center"><INPUT class="text" name="note" size="20" value=""></TD>
+                <TD align="center">
+	                <INPUT type="submit" value="同意" name="status">
+	            </TD>
+	            <TD align="center">
+	                <INPUT type="submit" value="拒绝" name="status"> 
+	            </TD>	            	            
+                  </TR>
+                  </c:forEach>
+                  </c:if>
+                  </form>
                 <FORM action="examineServlet?action=planExamineRe" method=post>                
-                <c:if test="${(pd eq '6') or (pd eq '7')}">
-                <c:forEach items="${planList }" var="v">
+                <c:if test="${(pd eq '6') or (pd eq '7') or (pd eq '8')}">
+                <c:forEach items="${list }" var="v">
                 <input type="hidden" name="plan_id" value="${v.plan_id}">
               <TR style="FONT-WEIGHT: normal; FONT-ST  YLE: normal; BACKGROUND-COLOR: white; TEXT-DECORATION: none">
-                <TD>${v.plan_promulgator }</TD>
-                <TD>${v.plan_branch }</TD>
-                <TD>${v.plan_type}</TD>
-                <TD>${v.plan_name }</TD>
-                <TD>${v.plan_foundTime }</TD>
-                <TD><A href="planServlet?action=planQuery&plan_id=${v.plan_id}">查看</A> </TD>
-                <TD><INPUT class="text" name="note" size="20" value=""></TD>
-                <TD>
-	                <INPUT type="submit" value="同意" name="planT">
+                <TD align="center">${v.plan_promulgator }</TD>
+                <TD align="center">${v.plan_branch }</TD>
+                <TD align="center">${v.plan_type}</TD>
+                <TD align="center">${v.plan_name }</TD>
+                <TD align="center">${v.plan_foundTime }</TD>
+                <TD align="center"><A href="planServlet?action=planQuery&plan_id=${v.plan_id}">查看</A> </TD>
+                <TD align="center"><INPUT class="text" name="note" size="20" value=""></TD>
+                <TD align="center">
+	                <INPUT type="submit" value="同意" name="status">
 	            </TD>
-	            <TD>
-	                <INPUT type="submit" value="拒绝" name="planT"> 
+	            <TD align="center">
+	                <INPUT type="submit" value="拒绝" name="status"> 
 	            </TD>	            	            
                   </TR>
                   </c:forEach>
@@ -112,21 +162,22 @@ function __doPostBack(eventTarget, eventArgument) {
                   </FORM>
                <form action="examineServlet?action=registerExamineRe" method=post>                                 
                  <c:if test="${(pd eq '3') or (pd eq '5') or (pd eq '4') }">
-               <c:forEach items="${registerList }" var="q">
+               <c:forEach items="${list }" var="q">
                <input type="hidden" name="register_id" value="${q.register_id }">
+               <input type="hidden" name="type" value="${pd}">
              	<TR style="FONT-WEIGHT: normal; FONT-ST  YLE: normal; BACKGROUND-COLOR: white; TEXT-DECORATION: none">
-                <TD>${q.register_name }</TD>
-                <TD>${q.register_branch }</TD>
-                <TD>${q.register_type}</TD>
-                <TD>${q.register_type }</TD>
-                <TD>${q.register_startTime }</TD>
-                <TD><A href="registerParticularServlet?particularId=${q.register_id}">查看</A> </TD>
-                <TD><INPUT name="note" size="20" value=""></TD>
-                <TD>
-	                <INPUT type="submit" value="同意" name="registerT">
+                <TD align="center">${q.register_name }</TD>
+                <TD align="center">${q.register_branch }</TD>
+                <TD align="center">${q.register_type}</TD>
+                <TD align="center">${q.register_type }</TD>
+                <TD align="center"><fmt:formatDate value="${q.register_releaseTime}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></TD>
+                <TD align="center"><A href="registerParticularServlet?particularId=${q.register_id}">查看</A> </TD>
+                <TD align="center"><INPUT name="note" size="20" value=""></TD>
+                <TD align="center">
+	                <INPUT type="submit" value="同意" name="status">
 	            </TD>
-	            <TD>
-	                <INPUT type="submit" value="拒绝 " name="registerT"> 
+	            <TD align="center">
+	                <INPUT type="submit" value="拒绝 " name="status"> 
 	            </TD>	            
                   </TR>
                   </c:forEach>

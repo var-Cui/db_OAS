@@ -19,7 +19,7 @@ public class MeetingDaoImpl {
 	public void insertMeeting(MeetingVo meetingVo) {
 		Connection conn  = JDBCUtils.getConnection();
 
-		String sql="insert into meeting(meeting_name,meeting_releaseTime,is_open,meeting_staff,branch_id,meeting_place) values(?,?,?,?,?,?)";
+		String sql="insert into meeting(meeting_name,meeting_startTime,is_open,meeting_staff,branch_id,meeting_place,meeting_assentor,meeting_result,meeting_releaseTime,meeting_promulgator) values(?,?,?,?,?,?,?,?,sysdate(),?)";
 		PreparedStatement  pstate =null;
 		try {
 			pstate =conn.prepareStatement(sql);
@@ -29,6 +29,9 @@ public class MeetingDaoImpl {
 			pstate.setString(4,meetingVo.getMeeting_staff());
 			pstate.setInt(5,meetingVo.getBranch_id());
 			pstate.setString(6,meetingVo.getMeeting_place());
+			pstate.setString(7,meetingVo.getMeeting_assentor());
+			pstate.setString(8,meetingVo.getMeeting_result());
+			pstate.setString(9,meetingVo.getMeeting_promulgator());
 			pstate.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -44,14 +47,14 @@ public class MeetingDaoImpl {
 		MeetingVo meetingVo = null;
 		ArrayList<MeetingVo> list = new ArrayList<MeetingVo>();
 		try {
-			pre=conn.prepareStatement("select meeting_id,meeting_name,branch_id,meeting_staff,meeting_place,meeting_releaseTime from meeting;");
+			pre=conn.prepareStatement("select meeting_id,meeting_name,branch_id,meeting_staff,meeting_place,meeting_startTime from meeting;");
 			res=pre.executeQuery();
 			while(res.next()){
 				meetingVo =new MeetingVo();
 				meetingVo.setMeeting_id(res.getInt(1));
 				meetingVo.setBranch_id(res.getInt(3));
 				meetingVo.setMeeting_name(res.getString(2));
-				meetingVo.setMeeting_releaseTime(res.getTimestamp(6));
+				meetingVo.setMeeting_startTime(res.getTimestamp(6));
 				meetingVo.setMeeting_place(res.getString(5));
 				meetingVo.setMeeting_staff(res.getString(4));
 				list.add(meetingVo);
@@ -79,7 +82,7 @@ public class MeetingDaoImpl {
 				meetingVo.setBranch_id(res.getInt("branch_id"));
 				meetingVo.setMeeting_name(res.getString("meeting_name"));
 				meetingVo.setMeeting_place(res.getString("meeting_place"));
-				meetingVo.setMeeting_releaseTime(res.getTimestamp("meeting_releaseTime"));
+				meetingVo.setMeeting_startTime(res.getTimestamp("meeting_startTime"));
 				meetingVo.setMeeting_staff(res.getString("meeting_staff"));
 				meetingVo.setIs_open(res.getString("is_open"));
 			}
@@ -141,5 +144,35 @@ public class MeetingDaoImpl {
 			}
 		}
 		return meetingList;
+	}
+	
+	public ArrayList<MeetingVo> meetingQuery_page(int pageCount,int pageSize,String sql ){
+		Connection con = (Connection) RegisterImpl.getConnection();
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		ArrayList<MeetingVo> meetingVoList = new ArrayList<MeetingVo>();
+		try {
+			pre = (PreparedStatement) con.prepareStatement(sql);
+			pre.setInt(1,(pageCount-1)*pageSize);
+			pre.setInt(2, pageSize);
+			rs = pre.executeQuery();
+			while(rs.next()){
+				MeetingVo meetingVo = new MeetingVo();
+				meetingVo.setMeeting_id(rs.getInt("meeting_id"));
+				meetingVo.setBranch_id(rs.getInt("branch_id"));
+				meetingVo.setMeeting_name(rs.getString("meeting_name"));
+				meetingVo.setMeeting_promulgator(rs.getString("meeting_promulgator"));
+				meetingVo.setMeeting_place(rs.getString("meeting_place"));
+				meetingVo.setMeeting_releaseTime(rs.getDate("meeting_releaseTime"));
+				meetingVo.setMeeting_staff(rs.getString("meeting_staff"));
+				meetingVo.setIs_open(rs.getString("is_open"));
+				meetingVoList.add(meetingVo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtils.closeAll(con, pre, rs);
+		}
+		return meetingVoList;	
 	}
 }

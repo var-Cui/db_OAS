@@ -222,6 +222,20 @@ public  class RegisterImpl extends JDBCUtils implements RegisterDao{
 		}
 	}
 	
+	public void audit(String sql){//选择查询 外出，出差，请假 记录
+		Connection con = (Connection) RegisterImpl.getConnection();
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		try {
+			pre = (PreparedStatement) con.prepareStatement(sql);
+			pre.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtils.closeAll(con, pre, rs);
+		}
+	}
+	
 	public int queryNum(String type) {
 		Connection con = (Connection) JDBCUtils.getConnection();
 		String sql = "SELECT count(register_id) from register where register_type = ?;";

@@ -17,4 +17,6 @@ public interface BranchDao {
 	public void updateBranch(BranchVo branchVo);
 	//部门名称查询
 	public BranchVo queryBranchName(String name);
+	//部门主管查询
+	public String queryBranchMinister(String name);
 }

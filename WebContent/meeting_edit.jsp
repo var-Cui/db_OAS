@@ -77,7 +77,7 @@ $(function() {
           <td width="195" height="31" align="left" valign="middle" bgcolor="#FFFFFF">
 		  &nbsp;
 		  <input name="meet_date" type="text" id="meet_date" style="border:0px;"
-		  value = '<fmt:formatDate value="${meetingVo.meeting_releaseTime}" type="both" pattern="yyyy-MM-dd HH-mm-ss" />' />
+		  value = '<fmt:formatDate value="${meetingVo.meeting_startTime}" type="both" pattern="yyyy-MM-dd HH:mm:ss" />' />
 		  </td>
           <td width="81" height="31" align="center" valign="middle" bgcolor="#FFFFFF">是否公开：</td>
           <td width="172" align="left" valign="middle" bgcolor="#FFFFFF">

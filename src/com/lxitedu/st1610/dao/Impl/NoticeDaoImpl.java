@@ -18,7 +18,7 @@ public class NoticeDaoImpl {
 	public int insertNotice(NoticeVo noticeVo) {
 		Connection conn  = JDBCUtils.getConnection();
 		java.sql.Date sqlDate=new java.sql.Date(noticeVo.getNotice_releaseTime().getTime());
-		String sql="insert into notice(notice_name,notice_type,notice_promulgator,notice_releaseTime,notice_content,file_name) values(?,?,?,?,?,?)";
+		String sql="insert into notice(notice_name,notice_type,notice_promulgator,notice_releaseTime,notice_content,file_name,notice_assentor,notice_result) values(?,?,?,?,?,?,?,?)";
 		PreparedStatement  pstate =null;
 		int idNo = 0;
 		try {
@@ -29,6 +29,8 @@ public class NoticeDaoImpl {
 			pstate.setDate(4, sqlDate);
 			pstate.setString(5, noticeVo.getNotice_content());
 			pstate.setString(6, noticeVo.getFile_name());
+			pstate.setString(7, noticeVo.getNotice_assentor());
+			pstate.setString(8, noticeVo.getNotice_result());
 			if(pstate.executeUpdate() > 0 ){
 				ResultSet rs = pstate.getGeneratedKeys();
 				if(rs.next()){
@@ -99,6 +101,35 @@ public class NoticeDaoImpl {
 		}
 		return list;
 	}
+	public ArrayList<NoticeVo> noticeQuery_page(int pageCount,int pageSize,String sql ){
+		Connection con = (Connection) RegisterImpl.getConnection();
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		ArrayList<NoticeVo> noticeVoList = new ArrayList<NoticeVo>();
+		try {
+			pre = (PreparedStatement) con.prepareStatement(sql);
+			pre.setInt(1,(pageCount-1)*pageSize);
+			pre.setInt(2, pageSize);
+			rs = pre.executeQuery();
+			while(rs.next()){
+				NoticeVo noticeVo = new NoticeVo();
+				noticeVo.setNotice_id(Integer.valueOf(rs.getString("notice_id")));
+				noticeVo.setNotice_name(rs.getString("notice_name"));
+				noticeVo.setNotice_type(Integer.valueOf(rs.getString("notice_type")));
+				noticeVo.setNotice_promulgator(rs.getString("notice_promulgator"));
+				noticeVo.setNotice_releaseTime(rs.getDate("notice_releaseTime"));
+				noticeVo.setNotice_content(rs.getString("notice_content"));
+				noticeVo.setNotice_assentor(rs.getString("notice_assentor"));
+				noticeVoList.add(noticeVo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtils.closeAll(con, pre, rs);
+		}
+		return noticeVoList;	
+	}
+	
 	//按id查询公告类别
 	public NoticeVo queryNoticeTypeOne(String id) {
 		Connection conn  = JDBCUtils.getConnection();

@@ -3,17 +3,24 @@ package com.lxitedu.st1610.service.Impl;
 import java.util.ArrayList;
 
 import com.lxitedu.st1610.dao.PlanDao;
+import com.lxitedu.st1610.dao.Impl.MeetingDaoImpl;
+import com.lxitedu.st1610.dao.Impl.NoticeDaoImpl;
 import com.lxitedu.st1610.dao.Impl.PlanDaoImpl;
 import com.lxitedu.st1610.dao.Impl.RegisterImpl;
 import com.lxitedu.st1610.service.ExamineService;
+import com.lxitedu.st1610.vo.NoticeVo;
 import com.lxitedu.st1610.vo.PageVo;
 import com.lxitedu.st1610.vo.PlanVo;
 import com.lxitedu.st1610.vo.RegisterVo;
 
+import cn.lxitedu.st1610.bean.MeetingVo;
+
 public class ExamineServiceImpl implements ExamineService {
 	PlanDao planDao=new PlanDaoImpl();
+	NoticeDaoImpl noticeDaoImpl = new NoticeDaoImpl();
 	RegisterImpl registerImpl=new RegisterImpl();
-	public ArrayList<?> examinePlanQuery(PageVo p,String currPageNo,String examineType,String  branch){
+	MeetingDaoImpl meetingDaoImpl = new MeetingDaoImpl();
+	public ArrayList<?> examinePlanQuery(PageVo p,String currPageNo,String examineType,String  branch,String name){
 		//ÉóºË²éÑ¯
 		int no=0;
 		  if(null==currPageNo)
@@ -26,19 +33,23 @@ public class ExamineServiceImpl implements ExamineService {
 		  p.setCurrPageNo(no);
 		  
 	  if(("1").equals(examineType)){
-			String sql="select * from meeting where meeting_result='´ıÉóºË' limit ?,?;";
+			String sql="select * from meeting where meeting_result='´ıÉóºË' and meeting_assentor = '"+name+ "' limit ?,?;";
+			ArrayList<MeetingVo> list = meetingDaoImpl.meetingQuery_page(no,p.getPageSize(), sql);
+			return list;
 		}else if(("2").equals(examineType)){
-			String sql="select * from notice where notice_result='´ıÉóºË' limit ?,?;";
+			String sql="select * from notice where notice_result='´ıÉóºË' and notice_assentor = '"+name+ "' limit ?,?;";
+			ArrayList<NoticeVo> list = noticeDaoImpl.noticeQuery_page(no,p.getPageSize(), sql);
+			return list;
 		}else if(("3").equals(examineType)){
-			String sql="SELECT register_id,register_staffNum,register_name,register_branch,register_type,register_reason,register_startTime,register_endTime,register_assentor,register_result,register_note,register_releaseTime FROM register,staff WHERE staff.staff_branch=register.register_branch AND staff.staff_position='²¿³¤' AND register_result='´ıÉóºË' AND register_type='Çë¼Ù' AND register.register_branch='"+branch+"' LIMIT ?,?;";
+			String sql = "SELECT * FROM register WHERE register_result = '´ıÉóºË' and register_type = 'Çë¼Ù'  and register_assentor = '"+name+ "' limit ?,?;";
 			ArrayList<RegisterVo> list=(ArrayList<RegisterVo>) registerImpl.registerQuery_page(no,p.getPageSize(),sql);
 			return list;
 		}else if(("4").equals(examineType)){
-			String sql="SELECT register_id,register_staffNum,register_name,register_branch,register_type,register_reason,register_startTime,register_endTime,register_assentor,register_result,register_note,register_releaseTime FROM register,staff WHERE staff.staff_branch=register.register_branch AND staff.staff_position='²¿³¤' AND register_result='´ıÉóºË' AND register_type='³ö²î' AND register.register_branch='"+branch+"' LIMIT ?,?;";
+			String sql= "SELECT * FROM register WHERE register_result = '´ıÉóºË' and register_type = '³ö²î'  and register_assentor = '"+name+ "' limit ?,?;";
 			ArrayList<RegisterVo> list=(ArrayList<RegisterVo>) registerImpl.registerQuery_page(no,p.getPageSize(),sql);
 			return list;
 		}else if(("5").equals(examineType)){
-			String sql="SELECT register_id,register_staffNum,register_name,register_branch,register_type,register_reason,register_startTime,register_endTime,register_assentor,register_result,register_note,register_releaseTime FROM register,staff WHERE staff.staff_branch=register.register_branch AND staff.staff_position='²¿³¤' AND register_result='´ıÉóºË' AND register_type='Íâ³ö' AND register.register_branch='"+branch+"' LIMIT ?,?;";
+			String sql= "SELECT * FROM register WHERE register_result = '´ıÉóºË' and register_type = 'Íâ³ö'  and register_assentor = '"+name+ "' limit ?,?;";
 			ArrayList<RegisterVo> list=(ArrayList<RegisterVo>) registerImpl.registerQuery_page(no,p.getPageSize(),sql);
 			return list;
 		}else if(("6").equals(examineType)){
@@ -49,27 +60,33 @@ public class ExamineServiceImpl implements ExamineService {
 			String sql="select * from plan where plan_result='´ıÉóºË' and plan_type='²¿ÃÅ' limit ?,?;";
 			ArrayList<PlanVo> list=planDao.planPersonalList(no, p.getPageSize(),sql);
 			return list;
+		}else if(("8").equals(examineType)){
+			String sql="select * from plan where plan_result='´ıÉóºË' and plan_type = '¸öÈË' and plan_assentor = '"+name+ "' limit ?,?;";
+			ArrayList<PlanVo> list=planDao.planPersonalList(no, p.getPageSize(),sql);
+			return list;
 		}		
 		return null;
 	}
 	
-	public String examinePageQuery(String examineType,String branch){
+	public String examinePageQuery(String examineType,String branch,String name){
 		//ÉóºË²éÑ¯
 		String sql=null;
 		if(("1").equals(examineType)){
-			sql="select count(1) from meeting where meeting_result='´ıÉóºË';";		
+			sql="select count(1) from meeting where meeting_result='´ıÉóºË' and meeting_assentor = '"+name+"';";		
 		}else if(("2").equals(examineType)){
-			sql="select count(1) from notice where notice_result='´ıÉóºË';";
+			sql="select count(1) from notice where notice_result='´ıÉóºË'and notice_assentor = '"+name+"';";
 		}else if(("3").equals(examineType)){
-			sql="SELECT count(1) FROM register,staff WHERE staff.staff_branch=register.register_branch AND staff.staff_position='²¿³¤' AND register_result='´ıÉóºË' AND register_type='Çë¼Ù' AND register.register_branch='"+branch+"';";
+			sql="SELECT count(1) FROM register WHERE register_result = '´ıÉóºË' and register_type = 'Çë¼Ù'  and register_assentor = '"+name+ "';";
 		}else if(("4").equals(examineType)){
-			sql="SELECT count(1) FROM register,staff WHERE staff.staff_branch=register.register_branch AND staff.staff_position='²¿³¤' AND register_result='´ıÉóºË' AND register_type='³ö²î' AND register.register_branch='"+branch+"';";
+			sql="SELECT count(1) FROM register WHERE register_result = '´ıÉóºË' and register_type = '³ö²î'  and register_assentor = '"+name+ "';";
 		}else if(("5").equals(examineType)){
-			sql="SELECT count(1) FROM register,staff WHERE staff.staff_branch=register.register_branch AND staff.staff_position='²¿³¤' AND register_result='´ıÉóºË' AND register_type='Íâ³ö' AND register.register_branch='"+branch+"';";
+			sql="SELECT count(1) FROM register WHERE register_result = '´ıÉóºË' and register_type = 'Íâ³ö'  and register_assentor = '"+name+ "';";
 		}else if(("6").equals(examineType)){
 			sql="select count(1) from plan where plan_result='´ıÉóºË' and plan_type='ÆóÒµ';";			
 		}else if(("7").equals(examineType)){
 			sql="select count(1) from plan where plan_result='´ıÉóºË' and plan_type='²¿ÃÅ';";
+		}else if(("8").equals(examineType)){
+			sql="select count(1) from plan where plan_result='´ıÉóºË' and plan_type = '¸öÈË' and plan_assentor = '"+name+ "';";
 		}		
 		return sql;
 	}
@@ -81,15 +98,8 @@ public class ExamineServiceImpl implements ExamineService {
 	public void registerTypeRe(String sql,int register_id){
 		registerImpl.registerTypeRe(sql, register_id);
 	}
-/*	if(("»áÒé").equals(examineType)){
-		String sql="select * from meeting where meeting_result='´ıÉóºË' limit ?,?;";
-	}else if(("¹«¸æ").equals(examineType)){
-		String sql="select * from notice where meeting_result='´ıÉóºË' limit ?,?;";
-	}else if(("Çë¼Ù").equals(examineType)){
-		String sql="select * from register where meeting_result='´ıÉóºË' and register_type='Çë¼Ù' limit ?,?;";
-	}else if(("³ö²î").equals(examineType)){
-		String sql="select * from register where meeting_result='´ıÉóºË' and register_type='³ö²î' limit ?,?;";
-	}else if(("Íâ³ö").equals(examineType)){
-		String sql="select * from register where meeting_result='´ıÉóºË' and register_type='Íâ³ö' limit ?,?;";
-	}else */
+	
+	public void audit(String sql){
+		registerImpl.audit(sql);
+	}
 }

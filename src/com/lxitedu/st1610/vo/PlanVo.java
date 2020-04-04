@@ -21,7 +21,7 @@ public class PlanVo {
 	
 	public PlanVo(String plan_name, String plan_content, String plan_type,
 			String plan_result, String plan_promulgator,
-			int plan_promulgatorNum, String plan_branch) {
+			int plan_promulgatorNum, String plan_branch,String plan_assentor) {
 		super();
 		this.plan_name = plan_name;
 		this.plan_content = plan_content;
@@ -30,6 +30,7 @@ public class PlanVo {
 		this.plan_promulgator = plan_promulgator;
 		this.plan_promulgatorNum = plan_promulgatorNum;
 		this.plan_branch = plan_branch;
+		this.plan_assentor = plan_assentor;
 	}
 
 	public PlanVo(int plan_id, String plan_name, String plan_content,

@@ -67,7 +67,7 @@ function checkForm(form){
 
 <table width="517" height="82%" border="0" cellpadding="0" cellspacing="1" bgcolor="#0077B2">
         <tr>
-          <td height="22" colspan="2" background="../image/beijing.gif" bgcolor="#FFFFFF"><span class="STYLE6">&nbsp;&nbsp;请假记录：</span></td>
+          <td height="22" colspan="2" background="image/beijing.gif" bgcolor="#FFFFFF"><span class="STYLE6">&nbsp;&nbsp;请假记录：</span></td>
         </tr>
         <tr>
         

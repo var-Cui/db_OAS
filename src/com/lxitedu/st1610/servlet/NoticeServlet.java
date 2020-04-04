@@ -16,10 +16,12 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import com.lxitedu.st1610.dao.Impl.BranchDaoImpl;
 import com.lxitedu.st1610.dao.Impl.NoticeDaoImpl;
 import com.lxitedu.st1610.dao.Impl.NoticeTypeDaoImpl;
 import com.lxitedu.st1610.vo.NoticeTypeVO;
 import com.lxitedu.st1610.vo.NoticeVo;
+import com.lxitedu.st1610.vo.StaffVo;
 
 import cn.lxitedu.st1610.util.FileUtils;
 
@@ -48,16 +50,16 @@ public class NoticeServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		NoticeDaoImpl noticeDaoImpl=new NoticeDaoImpl();
+		BranchDaoImpl branchDaoImpl=new BranchDaoImpl();
 		NoticeTypeDaoImpl noticeTypeDaoImpl = new NoticeTypeDaoImpl();
 		String action=request.getParameter("action");
-		
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);//outputStream
 		upload.setHeaderEncoding("UTF-8");
 		String savePath = this.getServletContext().getRealPath("/uploadFile");
-		
 		if("add".equals(action)){
 			try {
+				//获取当前对象部门信息  若是普通员工则需要审批
 				List<FileItem> items = upload.parseRequest(request);
 				String notice_name = "";
 				String notice_type = "";
@@ -96,6 +98,11 @@ public class NoticeServlet extends HttpServlet {
 				noticeVo.setNotice_releaseTime(time);
 				noticeVo.setNotice_content(notice_content);
 				noticeVo.setFile_name(fileName);
+				StaffVo staffVo = (StaffVo) request.getSession().getAttribute("staffVo");//登录属性对象
+				if("普通员工".equals(staffVo.getStaff_position())) {
+					noticeVo.setNotice_result("待审核");
+					noticeVo.setNotice_assentor(branchDaoImpl.queryBranchMinister(staffVo.getStaff_branch()));
+				}
 				int insertNotice = noticeDaoImpl.insertNotice(noticeVo);
 				savePath += File.separator +insertNotice;
 				FileUtils.uploadFile(savePath, fileName,f);

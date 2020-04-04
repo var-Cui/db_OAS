@@ -5,7 +5,7 @@ import java.util.Date;
 public class MeetingVo {
 	private int meeting_id;
 	private String meeting_name;
-	private String meeting_startTime;
+	private Date meeting_startTime;
 	private String meeting_place;
 	private String meeting_staff;
 	private String meeting_promulgator;
@@ -43,10 +43,10 @@ public class MeetingVo {
 	public void setMeeting_name(String meeting_name) {
 		this.meeting_name = meeting_name;
 	}
-	public String getMeeting_startTime() {
+	public Date getMeeting_startTime() {
 		return meeting_startTime;
 	}
-	public void setMeeting_startTime(String meeting_startTime) {
+	public void setMeeting_startTime(Date meeting_startTime) {
 		this.meeting_startTime = meeting_startTime;
 	}
 	public String getMeeting_place() {

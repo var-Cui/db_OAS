@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import com.lxitedu.st1610.dao.Impl.BranchDaoImpl;
 import com.lxitedu.st1610.dao.Impl.PlanDaoImpl;
 import com.lxitedu.st1610.service.Impl.PlanServiceImpl;
 import com.lxitedu.st1610.vo.CommentVo;
@@ -54,6 +55,7 @@ public class PlanServlet extends HttpServlet {
 		request.setAttribute("c","部长");
 		PlanServiceImpl planServiceImpl=new PlanServiceImpl();
 		PlanDaoImpl planDaoImpl=new PlanDaoImpl();
+		BranchDaoImpl branchDaoImpl = new BranchDaoImpl();
 		log.warn("进入计划PlanServlet");
 		if(("planPersonalList").equals(action)){
 			//个人计划首页迭代
@@ -95,8 +97,13 @@ public class PlanServlet extends HttpServlet {
 		}else if(("planAdd").equals(action)){
 			log.warn("进入个人计划Add");
 			String plan_type="个人";
-			String plan_result="待审核";
-			PlanVo planVo=new PlanVo(plan_name,plan_content,plan_type,plan_result,staffVo.getStaff_name(),staffVo.getStaff_num(),staffVo.getStaff_branch());
+			String plan_result = "";
+			String plan_assentor = "";
+			if("普通员工".equals(staffVo.getStaff_position())) {
+				plan_result = "待审核";
+				plan_assentor = branchDaoImpl.queryBranchMinister(staffVo.getStaff_branch());
+			}
+			PlanVo planVo=new PlanVo(plan_name,plan_content,plan_type,plan_result,staffVo.getStaff_name(),staffVo.getStaff_num(),staffVo.getStaff_branch(),plan_assentor);
 			planServiceImpl.planAdd(planVo);
 			request.getRequestDispatcher("planServlet?action=planPersonalList").forward(request, response);
 		}else if(("planDel").equals(action)){
@@ -136,8 +143,8 @@ public class PlanServlet extends HttpServlet {
 			log.warn("进入部门计划Add");
 			String plan_type="部门";
 			String plan_result="待审核";
-			PlanVo planVo=new PlanVo(plan_name,plan_content,plan_type,plan_result,staffVo.getStaff_name(),staffVo.getStaff_num(),staffVo.getStaff_branch());
-			planServiceImpl.planAdd(planVo);
+//			PlanVo planVo=new PlanVo(plan_name,plan_content,plan_type,plan_result,staffVo.getStaff_name(),staffVo.getStaff_num(),staffVo.getStaff_branch());
+//			planServiceImpl.planAdd(planVo);
 			request.getRequestDispatcher("planServlet?action=planBranchlist").forward(request, response);
 		}else if(("planBusinesslist").equals(action)){
 			log.warn("进入企业计划List");
@@ -158,8 +165,8 @@ public class PlanServlet extends HttpServlet {
 			log.warn("进入企业计划Add");
 			String plan_type="企业";
 			String plan_result="待审核";
-			PlanVo planVo=new PlanVo(plan_name,plan_content,plan_type,plan_result,staffVo.getStaff_name(),staffVo.getStaff_num(),staffVo.getStaff_branch());
-			planServiceImpl.planAdd(planVo);
+//			PlanVo planVo=new PlanVo(plan_name,plan_content,plan_type,plan_result,staffVo.getStaff_name(),staffVo.getStaff_num(),staffVo.getStaff_branch());
+//			planServiceImpl.planAdd(planVo);
 			request.getRequestDispatcher("planServlet?action=planBusinesslist").forward(request, response);
 		}else if(("planPersonalVerifyQuery").equals(action)){
 			log.warn("进入个人计划查询部长");

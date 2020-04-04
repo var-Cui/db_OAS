@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import com.lxitedu.st1610.dao.MaintainDao;
 import com.lxitedu.st1610.util.JDBCUtils;
@@ -14,11 +17,8 @@ public class MaintainDaoImpl implements MaintainDao{
 
 	@Override
 	public void insertMaintain(MaintainVo maintainVo) {
-		// TODO Auto-generated method stub
 				Connection conn  = JDBCUtils.getConnection();
-
 				java.sql.Date sqlDate=new java.sql.Date(maintainVo.getMaintain_time().getTime());
-				
 				String sql="insert into maintain(maintain_model,maintain_menu,maintain_url,maintain_time) values(?,?,?,?)";
 				PreparedStatement  pstate =null;
 				try {
@@ -27,10 +27,8 @@ public class MaintainDaoImpl implements MaintainDao{
 					pstate.setString(2, maintainVo.getMaintain_menu());
 					pstate.setString(3, maintainVo.getMaintain_url());
 					pstate.setDate(4, sqlDate);
-					
 					pstate.executeUpdate();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}finally{
 					JDBCUtils.closeAll(conn, pstate, null);
@@ -39,9 +37,7 @@ public class MaintainDaoImpl implements MaintainDao{
 
 	@Override
 	public void deleteMaintain(int id) {
-		// TODO Auto-generated method stub
 		Connection conn  = JDBCUtils.getConnection();
-		
 		String sql = "delete from maintain where maintain_id=?";
 		PreparedStatement  pstate =null;
 		try {
@@ -50,7 +46,6 @@ public class MaintainDaoImpl implements MaintainDao{
 			
 			pstate.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			JDBCUtils.closeAll(conn, pstate, null);
@@ -59,7 +54,6 @@ public class MaintainDaoImpl implements MaintainDao{
 
 	@Override
 	public ArrayList<MaintainVo> queryMaintain() {
-		// TODO Auto-generated method stub
 		Connection conn  = JDBCUtils.getConnection();
 		PreparedStatement pre=null;
 		ResultSet res=null;
@@ -79,7 +73,6 @@ public class MaintainDaoImpl implements MaintainDao{
 				maintainVo=null;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			JDBCUtils.closeAll(conn, pre, res);
@@ -89,7 +82,6 @@ public class MaintainDaoImpl implements MaintainDao{
 
 	@Override
 	public void updateMaintain(MaintainVo maintainVo) {
-		// TODO Auto-generated method stub
 		Connection conn  = JDBCUtils.getConnection()             ;
 		java.sql.Date sqlDate=new java.sql.Date(maintainVo.getMaintain_time().getTime());
 		
@@ -106,7 +98,6 @@ public class MaintainDaoImpl implements MaintainDao{
 			    pstate.executeUpdate();
 			  
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			JDBCUtils.closeAll(conn, pstate, null);
@@ -115,7 +106,6 @@ public class MaintainDaoImpl implements MaintainDao{
 
 	@Override
 	public MaintainVo queryInfo(int id) {
-		// TODO Auto-generated method stub
 		Connection conn  = JDBCUtils.getConnection();
 		String sql = "select maintain_id,maintain_model,maintain_menu,maintain_url,maintain_time from maintain where maintain_id=?";
 		PreparedStatement  pstate =null;
@@ -132,11 +122,40 @@ public class MaintainDaoImpl implements MaintainDao{
 				maintainVo.setMaintain_time(res.getDate("maintain_time"));
 			}
 		}catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return maintainVo;	
 	}
 
-	
+	public List<MaintainVo> getList(String name) {
+		Connection conn  = JDBCUtils.getConnection();
+		String sql ="";
+		PreparedStatement  pstate =null;
+		MaintainVo maintainVo = null;
+		List<MaintainVo> list=new ArrayList<MaintainVo>();
+		Date date = new Date();
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String time = sdf.format(date);
+			sql = " SELECT '会议' AS 'type',meeting_promulgator AS people FROM meeting  "
+			    + " WHERE meeting_assentor = '"+ name +"'  AND meeting_result = '待审核' AND meeting_releaseTime = '" +time
+				+ "' UNION ALL SELECT '公告',notice_promulgator FROM notice"
+				+ " WHERE notice_assentor = '"+ name +"'  AND notice_result = '待审核' AND notice_releaseTime = '" + time
+				+ "' UNION ALL SELECT register_type,register_name FROM register " 
+				+ " WHERE register_assentor = '"+ name +"'AND register_result = '待审核' AND register_releaseTime = '" + time
+				+ "' UNION ALL SELECT plan_type,plan_promulgator FROM plan "
+				+ " WHERE plan_assentor = '"+ name +"'  AND plan_type = '个人' AND plan_releaseTime = '" + time + "';";
+			pstate =conn.prepareStatement(sql);
+			ResultSet res=pstate.executeQuery();
+			while(res.next()){
+				maintainVo = new MaintainVo();
+				maintainVo.setMaintain_url(res.getString("type"));
+				maintainVo.setMaintain_menu(res.getString("people"));
+				list.add(maintainVo);
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 }

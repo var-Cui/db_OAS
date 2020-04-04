@@ -237,4 +237,8 @@
         <servlet-name>DisplayChart</servlet-name>  
         <url-pattern>/chart</url-pattern>  
 	</servlet-mapping> 
+	
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
 </web-app>

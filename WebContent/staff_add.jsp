@@ -70,7 +70,7 @@ function checkForm(form){
 
 <table width="517" height="82%" border="0" cellpadding="0" cellspacing="1" bgcolor="#0077B2">
         <tr>
-          <td height="22" colspan="2" background="../image/beijing.gif" bgcolor="#FFFFFF"><span class="STYLE6">&nbsp;&nbsp;用户添加</span></td>
+          <td height="22" colspan="2" background="image/beijing.gif" bgcolor="#FFFFFF"><span class="STYLE6">&nbsp;&nbsp;用户添加</span></td>
         </tr>
         <tr>
           <td height="25" align="center" valign="middle" bgcolor="#FFFFFF">编号</td>
@@ -125,9 +125,9 @@ function checkForm(form){
           <td height="25" align="left" valign="middle" bgcolor="#FFFFFF">
             &nbsp;
         	<select name="staff_position">
-		  
 		     <option value="普通员工" selected="selected">普通员工</option>
-			 <option value="部长">部长</option>
+			 <option value="部门主管">部门主管</option>
+			 <option value="人事">人事</option>
 		  </select>
         </tr>
         <tr>

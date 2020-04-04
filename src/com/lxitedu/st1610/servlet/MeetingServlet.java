@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.lxitedu.st1610.dao.Impl.BranchDaoImpl;
 import com.lxitedu.st1610.dao.Impl.MeetingDaoImpl;
 import com.lxitedu.st1610.vo.BranchVo;
+import com.lxitedu.st1610.vo.StaffVo;
 
 import cn.lxitedu.st1610.bean.MeetingVo;
 
@@ -65,8 +66,14 @@ public class MeetingServlet extends HttpServlet {
 				meetingVo.setIs_open(is_open);
 				meetingVo.setMeeting_place(meeting_place);
 				meetingVo.setBranch_id(Integer.valueOf(branch_id));
+				StaffVo staffVo = (StaffVo) request.getSession().getAttribute("staffVo");//登录属性对象
+				meetingVo.setMeeting_promulgator(staffVo.getStaff_name());
+				if("普通员工".equals(staffVo.getStaff_position())) {
+					meetingVo.setMeeting_result("待审核");
+					meetingVo.setMeeting_assentor(branchDaoImpl.queryBranchMinister(staffVo.getStaff_branch()));
+				}
 				meetingDaoImpl.insertMeeting(meetingVo);
-				response.sendRedirect("meeting_list.jsp");
+				response.sendRedirect("MeetingServlet?action=query");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

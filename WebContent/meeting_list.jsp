@@ -63,7 +63,7 @@ a:active {
            <c:forEach items="${list }" var="a">
            <tr>
              <td height="25" align="center" bgcolor="#FFFFFF">&nbsp;${a.meeting_name}</td>
-             <td height="11" align="center" bgcolor="#FFFFFF">&nbsp;<fmt:formatDate value="${a.meeting_releaseTime}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+             <td height="11" align="center" bgcolor="#FFFFFF">&nbsp;<fmt:formatDate value="${a.meeting_startTime}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></td>
              <td height="25" align="center" bgcolor="#FFFFFF">&nbsp;${a.meeting_staff}</td>
              <td height="25" align="center" bgcolor="#FFFFFF">&nbsp;${a.branch_name}</td>
              <td height="25" align="center" bgcolor="#FFFFFF">&nbsp;${a.meeting_place}</td>
