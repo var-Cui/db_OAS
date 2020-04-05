@@ -196,7 +196,7 @@ public  class RegisterImpl extends JDBCUtils implements RegisterDao{
 				registerVo.setRegister_assentor(rs.getString(9));
 				registerVo.setRegister_result(rs.getString(10));
 				registerVo.setRegister_note(rs.getString(11));
-				registerVo.setRegister_releaseTime(rs.getTimestamp(12));
+				registerVo.setRegister_releaseTime(rs.getDate(12));
 				RegisterVoList.add(registerVo);
 			}
 		} catch (SQLException e) {

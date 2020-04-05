@@ -95,7 +95,7 @@ public class MeetingDaoImpl {
 	}
 	public void updateMeeting(MeetingVo meetingVo) {
 		Connection conn  = JDBCUtils.getConnection();
-		String sql = "update meeting set meeting_name=?,branch_id=?,is_open=?,meeting_place=?,meeting_releaseTime=?,meeting_staff=? where meeting_id=?";
+		String sql = "update meeting set meeting_name=?,branch_id=?,is_open=?,meeting_place=?,meeting_startTime=?,meeting_staff=? where meeting_id=?";
 		PreparedStatement  pstate =null;
 		try {
 			pstate =conn.prepareStatement(sql);

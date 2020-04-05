@@ -112,9 +112,9 @@ public class ExamineServlet extends HttpServlet {
 			String note = request.getParameter("note");
 			String sql = "";
 			if(("同意").equals(status)) {
-				sql = "update meeting  set meeting_note = '"+note+"' ,meeting_result = '已通过'  where meeting_id = " + meet_id;
+				sql = "update meeting  set meeting_note = '"+note+"' ,meeting_result = '已通过',meeting_releaseTime = now()  where meeting_id = " + meet_id;
 			} else {
-				sql = "update meeting  set meeting_note = '"+note+"' ,meeting_result = '未通过'  where meeting_id = " + meet_id;
+				sql = "update meeting  set meeting_note = '"+note+"' ,meeting_result = '未通过',meeting_releaseTime = now()  where meeting_id = " + meet_id;
 			}
 			esImpl.audit(sql);
 			request.getRequestDispatcher("examineServlet?action=examineQuery&examineType=1").forward(request, response);
@@ -124,9 +124,9 @@ public class ExamineServlet extends HttpServlet {
 			String note = request.getParameter("note");
 			String sql = "";
 			if(("同意").equals(status)) {
-				sql = "update notice  set notice_note = '"+note+"' ,notice_result = '已通过'  where notice_id = " + meet_id;
+				sql = "update notice  set notice_note = '"+note+"' ,notice_result = '已通过',notice_releaseTime  = now()  where notice_id = " + meet_id;
 			} else {
-				sql = "update notice  set notice_note = '"+note+"' ,notice_result = '未通过'  where notice_id = " + meet_id;
+				sql = "update notice  set notice_note = '"+note+"' ,notice_result = '未通过',notice_releaseTime  = now()  where notice_id = " + meet_id;
 			}
 			esImpl.audit(sql);
 			request.getRequestDispatcher("examineServlet?action=examineQuery&examineType=2").forward(request, response);

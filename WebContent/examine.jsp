@@ -104,7 +104,7 @@ function __doPostBack(eventTarget, eventArgument) {
                 <TD align="center">会议</TD>
                 <TD align="center">${v.meeting_name }</TD>
                 <TD align="center">${v.meeting_releaseTime }</TD>
-                <TD align="center"><A href="planServlet?action=planQuery&plan_id=${v.meeting_id}">查看</A> </TD>
+                <TD align="center"><A href="MeetingServlet?action=query">查看</A>  </TD>
                 <TD align="center"><INPUT class="text" name="note" size="20" value=""></TD>
                 <TD align="center">
 	                <INPUT type="submit" value="同意" name="status">
@@ -126,7 +126,7 @@ function __doPostBack(eventTarget, eventArgument) {
                 <TD align="center">公告</TD>
                 <TD align="center">${v.notice_name }</TD>
                 <TD align="center">${v.notice_releaseTime }</TD>
-                <TD align="center"><A href="planServlet?action=planQuery&plan_id=${v.notice_id}">查看</A> </TD>
+                <TD align="center"><A href="noticeServlet?action=queryNotice&amp;id=${v.notice_id}">查看</A> </TD>
                 <TD align="center"><INPUT class="text" name="note" size="20" value=""></TD>
                 <TD align="center">
 	                <INPUT type="submit" value="同意" name="status">
@@ -170,7 +170,7 @@ function __doPostBack(eventTarget, eventArgument) {
                 <TD align="center">${q.register_branch }</TD>
                 <TD align="center">${q.register_type}</TD>
                 <TD align="center">${q.register_type }</TD>
-                <TD align="center"><fmt:formatDate value="${q.register_releaseTime}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></TD>
+                <TD align="center">${q.register_releaseTime}</TD>
                 <TD align="center"><A href="registerParticularServlet?particularId=${q.register_id}">查看</A> </TD>
                 <TD align="center"><INPUT name="note" size="20" value=""></TD>
                 <TD align="center">

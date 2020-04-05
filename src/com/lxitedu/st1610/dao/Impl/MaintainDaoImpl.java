@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.lxitedu.st1610.dao.MaintainDao;
 import com.lxitedu.st1610.util.JDBCUtils;
+import com.lxitedu.st1610.vo.BranchVo;
 import com.lxitedu.st1610.vo.MaintainVo;
 
 public class MaintainDaoImpl implements MaintainDao{
@@ -152,6 +153,88 @@ public class MaintainDaoImpl implements MaintainDao{
 				maintainVo.setMaintain_url(res.getString("type"));
 				maintainVo.setMaintain_menu(res.getString("people"));
 				list.add(maintainVo);
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public List<BranchVo>  getAuditList(String name){
+		Connection conn  = JDBCUtils.getConnection();
+		String sql ="";
+		PreparedStatement  pstate =null;
+		BranchVo branchVo = null;
+		List<BranchVo> list=new ArrayList<BranchVo>();
+		Date date = new Date();
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String time = sdf.format(date);
+			sql = " SELECT '公告审批通过' AS result ,notice_id AS id,'1' as type FROM notice "
+				+ " WHERE notice_promulgator = '"+ name +"' AND notice_result = '已通过' AND notice_releaseTime = '" +time
+				+ " 'UNION ALL SELECT '公告审批未通过' AS result ,notice_id AS id,'1' as type FROM notice "
+				+ " WHERE notice_promulgator = '"+ name +"' AND notice_result = '未通过' AND notice_releaseTime = '" +time
+				+ " 'UNION ALL SELECT '会议审批通过',meeting_id AS id,'2' FROM meeting "
+				+ " WHERE meeting_promulgator = '"+ name +"' AND meeting_result = '已通过' AND meeting_releaseTime = '" +time
+				+ " 'UNION ALL SELECT '会议审批未通过',meeting_id AS id,'2' FROM meeting "
+				+ " WHERE meeting_promulgator = '"+ name +"' AND meeting_result = '未通过' AND meeting_releaseTime = '" +time
+				+ " 'UNION ALL SELECT CONCAT(register_type,'申请审批通过') ,register_id, '3'  FROM register "
+				+ " WHERE register_name = '"+ name +"' AND register_result = '已通过' AND register_releaseTime = '" +time
+				+ " 'UNION ALL SELECT CONCAT(register_type,'申请审批未通过') ,register_id, '3'  FROM register "
+				+ " WHERE register_name = '"+ name +"' AND register_result = '未通过' AND register_releaseTime = '" +time
+				+ " 'UNION ALL SELECT  '个人计划审批通过',plan_id,'4' FROM plan "
+				+ " WHERE plan_promulgator = '"+ name +"' AND plan_type = '个人' AND plan_result = '已通过' AND plan_releaseTime = '" +time
+				+ " 'UNION ALL SELECT  '个人计划审批未通过',plan_id,'4' FROM plan "
+				+ " WHERE plan_promulgator = '"+ name +"' AND plan_type = '个人' AND plan_result = '未通过' AND plan_releaseTime = '" +time + "';";
+			pstate =conn.prepareStatement(sql);
+			ResultSet res=pstate.executeQuery();
+			while(res.next()){
+				branchVo = new BranchVo();
+				branchVo.setBranch_summarize(res.getString("result"));
+				branchVo.setBranch_minister(res.getString("id"));
+				branchVo.setBranch_name(res.getString("type"));
+				list.add(branchVo);
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public List<BranchVo>  getAuditList(){
+		Connection conn  = JDBCUtils.getConnection();
+		String sql ="";
+		PreparedStatement  pstate =null;
+		BranchVo branchVo = null;
+		List<BranchVo> list=new ArrayList<BranchVo>();
+		Date date = new Date();
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String time = sdf.format(date);
+			sql = " SELECT '公告审批通过' AS result ,notice_id AS id,'1' as type FROM notice "
+				+ " WHERE  notice_result = '已通过' AND notice_releaseTime = '" +time
+				+ " 'UNION ALL SELECT '公告审批未通过' AS result ,notice_id AS id,'1' as type FROM notice "
+				+ " WHERE  notice_result = '未通过' AND notice_releaseTime = '" +time
+				+ " 'UNION ALL SELECT '会议审批通过',meeting_id AS id,'2' FROM meeting "
+				+ " WHERE  meeting_result = '已通过' AND meeting_releaseTime = '" +time
+				+ " 'UNION ALL SELECT '会议审批未通过',meeting_id AS id,'2' FROM meeting "
+				+ " WHERE  meeting_result = '未通过' AND meeting_releaseTime = '" +time
+				+ " 'UNION ALL SELECT CONCAT(register_type,'申请审批通过') ,register_id, '3'  FROM register "
+				+ " WHERE  register_result = '已通过' AND register_releaseTime = '" +time
+				+ " 'UNION ALL SELECT CONCAT(register_type,'申请审批未通过') ,register_id, '3'  FROM register "
+				+ " WHERE  register_result = '未通过' AND register_releaseTime = '" +time
+				+ " 'UNION ALL SELECT  '个人计划审批通过',plan_id,'4' FROM plan "
+				+ " WHERE  plan_type = '个人' AND plan_result = '已通过' AND plan_releaseTime = '" +time
+				+ " 'UNION ALL SELECT  '个人计划审批未通过',plan_id,'4' FROM plan "
+				+ " WHERE  plan_type = '个人' AND plan_result = '未通过' AND plan_releaseTime = '" +time + "';";
+			pstate =conn.prepareStatement(sql);
+			ResultSet res=pstate.executeQuery();
+			while(res.next()){
+				branchVo = new BranchVo();
+				branchVo.setBranch_summarize(res.getString("result"));
+				branchVo.setBranch_minister(res.getString("id"));
+				branchVo.setBranch_name(res.getString("type"));
+				list.add(branchVo);
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();

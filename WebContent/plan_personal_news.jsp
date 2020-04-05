@@ -47,6 +47,10 @@
         <td><input name="vocation" type="text" id="vocation" value="${planVo.plan_foundTime }"></td>
       </tr>
       <tr>
+        <td height="30" align="center">审核状态：</td>
+        <td><input name="vocation" type="text" id="vocation" value="${planVo.plan_result }"></td>
+      </tr>
+      <tr>
         <td height="30" align="center">审核领导：</td>
         <td><input name="vocation" type="text" id="vocation" value="${planVo.plan_assentor }"></td>
       </tr>
@@ -63,7 +67,7 @@
         <td align="center">
 		<input name="Submit2" type="button" class="btn_grey" value="返回" onClick="history.back()"></td>
     <c:if test="${planVo.plan_type eq '个人' }">
-     <td align="center"><input name="submit1" type="submit" class="btn_grey" value="查看评论"></td>
+     <!-- <td align="center"><input name="submit1" type="submit" class="btn_grey" value="查看评论"></td> -->
      </c:if> 
       </tr>
     </table>

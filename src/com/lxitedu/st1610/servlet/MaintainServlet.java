@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.lxitedu.st1610.dao.Impl.MaintainDaoImpl;
 import com.lxitedu.st1610.dao.Impl.ModelDaoImpl;
 import com.lxitedu.st1610.dao.Impl.NoticeDaoImpl;
+import com.lxitedu.st1610.vo.BranchVo;
 import com.lxitedu.st1610.vo.MaintainVo;
 import com.lxitedu.st1610.vo.ModelVo;
 import com.lxitedu.st1610.vo.NoticeVo;
@@ -177,6 +178,15 @@ public class MaintainServlet extends HttpServlet {
 			List<MaintainVo> list = maintainDaoImpl.getList(staffVo.getStaff_name());
 			request.setAttribute("auditList", list);
 			//第三个框
+			//普通员工
+			List<BranchVo> auditList = new ArrayList<BranchVo>();
+			if("普通员工".equals(staffVo.getStaff_position())) {
+				auditList = maintainDaoImpl.getAuditList(staffVo.getStaff_name());
+			} else if("人事".equals(staffVo.getStaff_position())) {
+				auditList = maintainDaoImpl.getAuditList();
+			}
+			//人事
+			request.setAttribute("resultList",auditList);
 	 		request.getRequestDispatcher("todayLook.jsp").forward(request, response);
 		} 
 	}

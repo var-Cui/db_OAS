@@ -64,9 +64,28 @@
 </c:if>
 <div>
 	<table width = "100%" height="150" border="0" align="left" cellpadding="0" cellspacing="0" style="margin-top:10px;">
-  	<tr><td align="left" class="todayTitle">今日通知</td></tr>
-  	<tr class="dataTr"><td align="left">1、12312312321</td><td align="left"><a style="color:#4DD0E1;" href="examineServlet?action=examineQuery&examineType=1">查看>></a></td></tr>
-  	<tr class="dataTr"><td align="left">1、12312312321</td><td align="left"><a style="color:#4DD0E1;" href="examineServlet?action=examineQuery&examineType=1">查看>></a></td></tr>
+	<c:if test="${resultList.size() == 0}">
+  		<tr><td align="left" class="todayTitle">今日无通知</td></tr>
+  	</c:if>
+  	<c:if test="${resultList.size() != 0}">
+  		<tr><td align="left" class="todayTitle">今日通知</td></tr>
+  		<c:forEach items="${resultList}" var="r" varStatus="s">
+  			<tr class="dataTr"><td align="left">${s.count}、${r.branch_summarize}</td><td align="left">
+  			<c:if test = "${r.branch_name == '1'}">
+  				<a style="color:#4DD0E1;" href="noticeServlet?action=queryNotice&amp;id=${r.branch_minister}">查看>></a>
+  			</c:if>
+  			<c:if test = "${r.branch_name == '2'}">
+  				<a style="color:#4DD0E1;" href="MeetingServlet?action=query">查看>></a>
+  			</c:if>
+  			<c:if test = "${r.branch_name == '3'}">
+  				<a style="color:#4DD0E1;" href="registerParticularServlet?particularId=${r.branch_minister}">查看>></a>
+  			</c:if>
+  			<c:if test = "${r.branch_name == '4'}">
+  				<a style="color:#4DD0E1;" href="planServlet?action=planQuery&plan_id=${r.branch_minister}">查看>></a>
+  			</c:if>
+  			</td></tr>
+  		</c:forEach>
+  	</c:if>
 </table>
 </div>
 </div>

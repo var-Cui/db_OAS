@@ -55,7 +55,7 @@ public class RegisterServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		RegisterImpl registerImpl = new RegisterImpl(); 
-		String register_assentor="";//获取他的上级姓名
+		String register_assentor="";
 		String register_result="";
 		StaffVo staffVo = (StaffVo) request.getSession().getAttribute("staffVo");//登录属性对象
 		if("普通员工".equals(staffVo.getStaff_position())) {
