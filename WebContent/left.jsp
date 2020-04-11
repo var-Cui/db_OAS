@@ -47,7 +47,10 @@ a:active {
 <table width="150" border="0" cellspacing="0" style="border: #000000 1px solid; margin-top:5px;">
   <tr>
     <td height="25" align="center" bgcolor="#DFEFF7"><img src="admin_img/left.gif" width="22" height="23" /></td>
-    <td width="112" bgcolor="#DFEFF7" class="STYLE1" style="padding-top:2px;">${result.maintain_name }</td>
+    <td width="112" bgcolor="#DFEFF7" class="STYLE1" style="padding-top:2px;">
+    <c:if test= "${result.maintain_name == '今日看板'}"><a target="mainFrame" style="color:#005FCF" href="maintainServlet?action=queryToday">${result.maintain_name }</a></c:if>
+    <c:if test= "${result.maintain_name != '今日看板'}">${result.maintain_name }</c:if>
+    </td>
   </tr>
 </table>
   

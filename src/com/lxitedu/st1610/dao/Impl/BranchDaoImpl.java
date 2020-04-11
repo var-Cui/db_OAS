@@ -128,7 +128,7 @@ public class BranchDaoImpl implements BranchDao{
 	@Override
 	public String queryBranchMinister(String name) {
 		Connection con = (Connection) JDBCUtils.getConnection();
-		String sql = "SELECT  branch_minister FROM BRANCH WHERE branch_name = ?;";
+		String sql = "SELECT  branch_minister FROM branch WHERE branch_name = ?;";
 		PreparedStatement pre = null;
 		ResultSet rs = null;
 		String branch = "";
