@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -159,7 +160,40 @@ public class MaintainServlet extends HttpServlet {
 			ModelDaoImpl modelDaoImpl = new ModelDaoImpl();
 			ArrayList<ModelVo> lists = modelDaoImpl.queryModel();
 			request.setAttribute("lists", lists);
-
+			StaffVo staffVo = (StaffVo) request.getSession().getAttribute("staffVo");//登录属性对象
+			//员工 今日看板、日常管理、考勤管理、计划制定、系统管理(系统管理只要"退出登录")
+			//部门主管 今日看板、日常管理、考勤管理、计划制定、审核管理、人事管理、系统管理(系统管理只要"退出登录") 
+			//人事 今日看板、日常管理、考勤管理、计划制定、人事管理、系统管理(系统管理只要"退出登录")
+			if(lists != null) {
+				Iterator<ModelVo> iterator = lists.iterator();
+				while(iterator.hasNext()) {
+					ModelVo next = iterator.next();
+					if(next != null) {
+						if("普通员工".equals(staffVo.getStaff_position())) {
+							if(("审核管理".equals(next.getMaintain_name())) || ("人事管理".equals(next.getMaintain_name()))) {
+								iterator.remove();
+							}
+						} else if ("人事".equals(staffVo.getStaff_position())) {
+							if(("审核管理".equals(next.getMaintain_name()))) {
+								iterator.remove();
+							}
+						}
+					}
+				}
+			}
+			if(list != null) {
+				Iterator<MaintainVo> iterator2 = list.iterator();
+				while(iterator2.hasNext()) {
+					MaintainVo next = iterator2.next();
+					if(next != null) {
+						if(("普通员工".equals(staffVo.getStaff_position()))  ||  ("人事".equals(staffVo.getStaff_position())) ||  ("部门主管".equals(staffVo.getStaff_position()))) {
+							if(("网站维护".equals(next.getMaintain_menu()))) {
+								iterator2.remove();
+							}
+						}
+					}
+				}
+			}
 			request.getRequestDispatcher("left.jsp").forward(request, response);
 		}  else if("queryToday".equals(action)){
 			NoticeDaoImpl noticeDaoImpl = new NoticeDaoImpl();
